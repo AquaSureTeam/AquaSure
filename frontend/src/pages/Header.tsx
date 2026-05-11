@@ -102,4 +102,3 @@ export function Header({ onNotificationClick, notificationCount, userName = "Adm
     </header>
   );
 }
-}

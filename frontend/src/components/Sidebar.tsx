@@ -136,5 +136,4 @@ export function Sidebar({ activeView, onViewChange, onLogout, userName = "Admin"
       </div>
     </div>
   );
-  );
 }

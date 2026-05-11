@@ -17,41 +17,41 @@ export function OfficerDashboard() {
     setChartData(data);
   }, []);
   const handleDownloadReport = () => {
-  let csvContent = "data:text/csv;charset=utf-8,";
+    let csvContent = "data:text/csv;charset=utf-8,";
 
-  // Monitoring Stations
-  csvContent += "Monitoring Stations\n";
-  csvContent += "Name,Status,Active Alerts,Latitude,Longitude\n";
-  monitoringStations.forEach(station => {
-    csvContent += `${station.name},${station.status},${station.alerts},${station.lat},${station.lon}\n`;
-  });
+    // Monitoring Stations
+    csvContent += "Monitoring Stations\n";
+    csvContent += "Name,Status,Active Alerts,Latitude,Longitude\n";
+    monitoringStations.forEach(station => {
+      csvContent += `${station.name},${station.status},${station.alerts},${station.lat},${station.lon}\n`;
+    });
 
-  csvContent += "\nPollution Events\n";
-  csvContent += "Station,Event,Severity,Time\n";
-  pollutionEvents.forEach(event => {
-    csvContent += `${event.station},${event.event},${event.severity},${event.time}\n`;
-  });
+    csvContent += "\nPollution Events\n";
+    csvContent += "Station,Event,Severity,Time\n";
+    pollutionEvents.forEach(event => {
+      csvContent += `${event.station},${event.event},${event.severity},${event.time}\n`;
+    });
 
-  csvContent += "\nReal-Time Alerts\n";
-  csvContent += "Message,Priority,Time\n";
-  realtimeAlerts.forEach(alert => {
-    csvContent += `${alert.message},${alert.priority},${alert.time}\n`;
-  });
+    csvContent += "\nReal-Time Alerts\n";
+    csvContent += "Message,Priority,Time\n";
+    realtimeAlerts.forEach(alert => {
+      csvContent += `${alert.message},${alert.priority},${alert.time}\n`;
+    });
 
-  csvContent += "\nSensor Data (24 Hour Trend)\n";
-  csvContent += "Time,pH,Turbidity,Temperature,Conductivity\n";
-  chartData.forEach(data => {
-    csvContent += `${data.time},${data.pH},${data.turbidity},${data.temperature},${data.conductivity}\n`;
-  });
+    csvContent += "\nSensor Data (24 Hour Trend)\n";
+    csvContent += "Time,pH,Turbidity,Temperature,Conductivity\n";
+    chartData.forEach(data => {
+      csvContent += `${data.time},${data.pH},${data.turbidity},${data.temperature},${data.conductivity}\n`;
+    });
 
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", "Environmental_Report.csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "Environmental_Report.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const monitoringStations = [
     { id: 1, name: "Station A - Industrial Zone", status: "critical", alerts: 3, lat: "40.7128", lon: "-74.0060" },
@@ -74,21 +74,21 @@ export function OfficerDashboard() {
   ];
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="p-8 space-y-8 relative"
     >
       {/* Decorative Elements */}
       <div className="absolute top-0 right-0 -z-10 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px]" />
-      
+
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
           <h1 className="text-4xl font-black text-gray-900 tracking-tight">Environmental <span className="text-blue-600">Officer</span></h1>
           <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-[0.2em]">National Monitoring Command Center</p>
         </div>
-        <button 
+        <button
           onClick={handleDownloadReport}
           className="flex items-center gap-3 px-8 py-4 bg-blue-600 text-white font-black uppercase tracking-widest text-xs rounded-2xl shadow-xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all"
         >
@@ -125,9 +125,8 @@ export function OfficerDashboard() {
                     </p>
                   </div>
                 </div>
-                <div className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${
-                  station.status === "safe" ? "bg-green-50 text-green-600" : "bg-amber-50 text-amber-600"
-                }`}>
+                <div className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${station.status === "safe" ? "bg-green-50 text-green-600" : "bg-amber-50 text-amber-600"
+                  }`}>
                   {station.status}
                 </div>
               </div>
@@ -160,9 +159,8 @@ export function OfficerDashboard() {
               <motion.div
                 key={alert.id}
                 whileHover={{ x: 5 }}
-                className={`p-4 rounded-2xl border-l-4 transition-all bg-white/40 ${
-                  alert.priority === "high" ? "border-red-500" : "border-amber-500"
-                }`}
+                className={`p-4 rounded-2xl border-l-4 transition-all bg-white/40 ${alert.priority === "high" ? "border-red-500" : "border-amber-500"
+                  }`}
               >
                 <div className="flex items-start justify-between gap-4">
                   <p className="text-sm font-bold text-gray-900 leading-relaxed">{alert.message}</p>
@@ -266,6 +264,6 @@ export function OfficerDashboard() {
           </ResponsiveContainer>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
