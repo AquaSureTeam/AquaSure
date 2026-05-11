@@ -1,7 +1,8 @@
 
-import {  FileSpreadsheet, Filter, TrendingUp, Calendar, Database } from "lucide-react";
+import {  FileSpreadsheet, Filter, TrendingUp, Calendar, Database, Search, Download } from "lucide-react";
 import { useState, useEffect } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from "recharts";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function ResearcherDashboard() {
   const [historicalData, setHistoricalData] = useState<any[]>([]);
@@ -45,36 +46,45 @@ export function ResearcherDashboard() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="p-8 space-y-8 relative"
+    >
+      {/* Decorative Elements */}
+      <div className="absolute top-0 right-0 -z-10 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px]" />
+
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#0A2A2F]">Researcher Dashboard</h1>
-          <p className="text-sm text-gray-600 mt-1">Scientific Data Analysis Interface</p>
+          <h1 className="text-4xl font-black text-gray-900 tracking-tight">Data <span className="text-blue-600">Researcher</span></h1>
+          <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-[0.2em]">Scientific Analysis Interface</p>
         </div>
         <button
           onClick={handleExportCSV}
-          className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#1F7A8C] to-[#BFE9F0] text-white rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-200"
+          className="flex items-center gap-3 px-8 py-4 bg-blue-600 text-white font-black uppercase tracking-widest text-xs rounded-2xl shadow-xl shadow-blue-100 hover:bg-blue-700 hover:-translate-y-1 transition-all"
         >
           <FileSpreadsheet size={18} />
-          Export CSV
+          Export Dataset
         </button>
       </div>
 
       {/* Data Filtering Tools */}
-      <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-2xl shadow-xl p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Filter size={20} className="text-[#1F7A8C]" />
-          <h2 className="text-lg font-semibold text-[#0A2A2F]">Data Filtering Tools</h2>
+      <div className="glass rounded-[2.5rem] p-8">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+            <Filter size={24} />
+          </div>
+          <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Scientific Filters</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Date Range */}
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-2">Time Period</label>
+            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Time Period</label>
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
-              className="w-full px-4 py-2.5 bg-white/60 border border-white/40 rounded-xl text-[#0A2A2F] focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/30 transition-all"
+              className="w-full px-5 py-4 bg-white/60 border border-gray-100 rounded-2xl text-gray-900 font-bold focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all appearance-none cursor-pointer"
             >
               <option value="30days">Last 30 Days</option>
               <option value="90days">Last 90 Days</option>
@@ -84,11 +94,11 @@ export function ResearcherDashboard() {
 
           {/* Parameter Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-2">Parameter</label>
+            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Metric Parameter</label>
             <select
               value={selectedParameter}
               onChange={(e) => setSelectedParameter(e.target.value)}
-              className="w-full px-4 py-2.5 bg-white/60 border border-white/40 rounded-xl text-[#0A2A2F] focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/30 transition-all"
+              className="w-full px-5 py-4 bg-white/60 border border-gray-100 rounded-2xl text-gray-900 font-bold focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all appearance-none cursor-pointer"
             >
               <option value="all">All Parameters</option>
               <option value="pH">pH Level</option>
@@ -100,9 +110,9 @@ export function ResearcherDashboard() {
 
           {/* Station Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-2">Monitoring Station</label>
+            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Telemetry Node</label>
             <select
-              className="w-full px-4 py-2.5 bg-white/60 border border-white/40 rounded-xl text-[#0A2A2F] focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/30 transition-all"
+              className="w-full px-5 py-4 bg-white/60 border border-gray-100 rounded-2xl text-gray-900 font-bold focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all appearance-none cursor-pointer"
             >
               <option value="all">All Stations</option>
               <option value="station-a">Station A</option>
@@ -114,137 +124,151 @@ export function ResearcherDashboard() {
         </div>
       </div>
 
-      {/* Long-Term Trend Graphs */}
-      <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-2xl shadow-xl p-6">
-        <div className="flex items-center gap-2 mb-6">
-          <TrendingUp size={20} className="text-[#1F7A8C]" />
-          <h2 className="text-lg font-semibold text-[#0A2A2F]">Long-Term Trend Analysis</h2>
+      {/* Long-Term Trend Analysis */}
+      <div className="glass rounded-[2.5rem] p-10">
+        <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+              <TrendingUp size={28} />
+            </div>
+            <div>
+              <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Trend Analysis</h2>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Multi-parameter telemetry visualization</p>
+            </div>
+          </div>
         </div>
 
         {/* Multi-Parameter Chart */}
-        <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-600 mb-3">All Parameters Over Time</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={historicalData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#BFE9F0" />
-              <XAxis dataKey="date" stroke="#0A2A2F" style={{ fontSize: 11 }} />
-              <YAxis stroke="#0A2A2F" style={{ fontSize: 11 }} />
+        <div className="mb-12">
+          <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6">Aggregate Parameter Feed</h3>
+          <ResponsiveContainer width="100%" height={350}>
+            <AreaChart data={historicalData}>
+              <defs>
+                <linearGradient id="colorPH" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <XAxis dataKey="date" stroke="#94a3b8" style={{ fontSize: 10, fontWeight: "bold" }} axisLine={false} tickLine={false} />
+              <YAxis stroke="#94a3b8" style={{ fontSize: 10, fontWeight: "bold" }} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{
                   background: "rgba(255,255,255,0.95)",
-                  border: "1px solid #BFE9F0",
-                  borderRadius: "8px",
+                  backdropFilter: "blur(10px)",
+                  border: "none",
+                  borderRadius: "20px",
+                  boxShadow: "0 20px 50px -10px rgba(0,0,0,0.1)",
                 }}
               />
-              <Legend />
-              <Line type="monotone" dataKey="pH" stroke="#1F7A8C" strokeWidth={2} dot={false} name="pH" />
-              <Line type="monotone" dataKey="turbidity" stroke="#F39C12" strokeWidth={2} dot={false} name="Turbidity (NTU)" />
-              <Line type="monotone" dataKey="temperature" stroke="#E74C3C" strokeWidth={2} dot={false} name="Temperature (°C)" />
-            </LineChart>
+              <Legend wrapperStyle={{ paddingTop: "25px", fontSize: "11px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "1px" }} />
+              <Area type="monotone" dataKey="pH" stroke="#2563eb" strokeWidth={4} fillOpacity={1} fill="url(#colorPH)" name="pH Index" />
+              <Area type="monotone" dataKey="turbidity" stroke="#60a5fa" strokeWidth={2} fillOpacity={0.1} fill="#60a5fa" name="Turbidity NTU" />
+            </AreaChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Individual Parameter Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-          <div>
-            <h3 className="text-sm font-medium text-gray-600 mb-3">pH Trend</h3>
-            <ResponsiveContainer width="100%" height={200}>
+        {/* Individual Trends */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="p-6 bg-gray-50/50 rounded-3xl border border-gray-100">
+            <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">pH Stability Trend</h3>
+            <ResponsiveContainer width="100%" height={180}>
               <LineChart data={historicalData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#BFE9F0" />
-                <XAxis dataKey="date" stroke="#0A2A2F" style={{ fontSize: 10 }} />
-                <YAxis stroke="#0A2A2F" style={{ fontSize: 10 }} domain={[6, 9]} />
-                <Tooltip contentStyle={{ background: "rgba(255,255,255,0.95)", border: "1px solid #BFE9F0", borderRadius: "8px" }} />
-                <Line type="monotone" dataKey="pH" stroke="#1F7A8C" strokeWidth={2} dot={false} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <XAxis dataKey="date" hide />
+                <YAxis hide domain={[6, 9]} />
+                <Tooltip contentStyle={{ borderRadius: "12px", border: "none", boxShadow: "0 10px 25px rgba(0,0,0,0.05)" }} />
+                <Line type="monotone" dataKey="pH" stroke="#2563eb" strokeWidth={3} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
-          <div>
-            <h3 className="text-sm font-medium text-gray-600 mb-3">Conductivity Trend (μS/cm)</h3>
-            <ResponsiveContainer width="100%" height={200}>
+          <div className="p-6 bg-gray-50/50 rounded-3xl border border-gray-100">
+            <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Conductivity Index (μS/cm)</h3>
+            <ResponsiveContainer width="100%" height={180}>
               <LineChart data={historicalData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#BFE9F0" />
-                <XAxis dataKey="date" stroke="#0A2A2F" style={{ fontSize: 10 }} />
-                <YAxis stroke="#0A2A2F" style={{ fontSize: 10 }} />
-                <Tooltip contentStyle={{ background: "rgba(255,255,255,0.95)", border: "1px solid #BFE9F0", borderRadius: "8px" }} />
-                <Line type="monotone" dataKey="conductivity" stroke="#2ECC71" strokeWidth={2} dot={false} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <XAxis dataKey="date" hide />
+                <YAxis hide />
+                <Tooltip contentStyle={{ borderRadius: "12px", border: "none", boxShadow: "0 10px 25px rgba(0,0,0,0.05)" }} />
+                <Line type="monotone" dataKey="conductivity" stroke="#60a5fa" strokeWidth={3} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
 
-      {/* Historical Data Table */}
-      <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-2xl shadow-xl p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <Database size={20} className="text-[#1F7A8C]" />
-            <h2 className="text-lg font-semibold text-[#0A2A2F]">Historical Data Records</h2>
+      {/* Data Records Table */}
+      <div className="glass rounded-[2.5rem] overflow-hidden">
+        <div className="p-8 border-b border-gray-100 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+              <Database size={24} />
+            </div>
+            <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Telemetry Records</h2>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Calendar size={16} />
-            <span>Read-Only Access</span>
+          <div className="flex items-center gap-3">
+            <div className="px-4 py-2 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-2">
+              <Search size={14} className="text-gray-400" />
+              <input type="text" placeholder="Search logs..." className="bg-transparent text-[10px] font-bold text-gray-900 focus:outline-none w-32" />
+            </div>
           </div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-[#BFE9F0]/30 border-b border-[#1F7A8C]/20">
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#0A2A2F]">Date</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#0A2A2F]">Time</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#0A2A2F]">pH</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#0A2A2F]">Turbidity (NTU)</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#0A2A2F]">Temp (°C)</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#0A2A2F]">Conductivity (μS/cm)</th>
+              <tr className="bg-gray-50/50">
+                <th className="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Timestamp</th>
+                <th className="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">pH Index</th>
+                <th className="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Turbidity</th>
+                <th className="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Temp (°C)</th>
+                <th className="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Conductivity</th>
+                <th className="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Status</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-50">
               {tableData.map((row, index) => (
-                <tr
-                  key={index}
-                  className="border-b border-white/40 hover:bg-white/30 transition-colors"
-                >
-                  <td className="px-4 py-3 text-sm text-[#0A2A2F]">{row.date}</td>
-                  <td className="px-4 py-3 text-sm text-gray-600">{row.time}</td>
-                  <td className="px-4 py-3 text-sm font-medium text-[#0A2A2F]">{row.pH}</td>
-                  <td className="px-4 py-3 text-sm font-medium text-[#0A2A2F]">{row.turbidity}</td>
-                  <td className="px-4 py-3 text-sm font-medium text-[#0A2A2F]">{row.temp}</td>
-                  <td className="px-4 py-3 text-sm font-medium text-[#0A2A2F]">{row.conductivity}</td>
+                <tr key={index} className="hover:bg-blue-50/30 transition-colors">
+                  <td className="px-8 py-5 text-sm font-bold text-gray-900">{row.date} <span className="text-[10px] text-gray-400 ml-2">{row.time}</span></td>
+                  <td className="px-8 py-5 text-sm font-bold text-gray-600">{row.pH}</td>
+                  <td className="px-8 py-5 text-sm font-bold text-gray-600">{row.turbidity}</td>
+                  <td className="px-8 py-5 text-sm font-bold text-gray-600">{row.temp}</td>
+                  <td className="px-8 py-5 text-sm font-bold text-gray-600">{row.conductivity}</td>
+                  <td className="px-8 py-5">
+                    <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest">Verified</span>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
-        <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
-          <span>Showing 5 of 1,247 records</span>
+        
+        <div className="p-8 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between">
+          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Page 1 of 124</p>
           <div className="flex gap-2">
-            <button className="px-3 py-1.5 bg-white/60 rounded-lg hover:bg-white/80 transition-colors">
-              Previous
-            </button>
-            <button className="px-3 py-1.5 bg-white/60 rounded-lg hover:bg-white/80 transition-colors">
-              Next
-            </button>
+            <button className="px-6 py-2.5 bg-white border border-gray-100 rounded-xl text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-blue-600 transition-all">Prev</button>
+            <button className="px-6 py-2.5 bg-white border border-gray-100 rounded-xl text-[10px] font-black text-gray-900 uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all">Next</button>
           </div>
         </div>
       </div>
 
       {/* Read-Only Notice */}
-      <div className="backdrop-blur-xl bg-blue-50/70 border border-blue-200/40 rounded-2xl shadow-xl p-4">
-        <div className="flex items-start gap-3">
-          <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-            <Database size={18} className="text-blue-600" />
+      <motion.div 
+        whileHover={{ scale: 1.01 }}
+        className="glass border-blue-200 bg-blue-50/30 rounded-3xl p-6"
+      >
+        <div className="flex items-center gap-6">
+          <div className="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-blue-200">
+            <Database size={28} />
           </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-blue-900 mb-1">Read-Only Research Access</h3>
-            <p className="text-sm text-blue-700">
-              You have read-only access to all historical data. No system control or modification capabilities are available.
-              All data can be exported for external analysis.
-            </p>
+          <div>
+            <h3 className="text-sm font-black text-blue-900 uppercase tracking-tight">Scientific Archive Access</h3>
+            <p className="text-xs font-bold text-blue-700/70 mt-1">You are currently in scientific research mode. Data is read-only and verified by national environmental standards.</p>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
+    </motion.div>
   );
 }

@@ -1,5 +1,6 @@
-import { Droplets, Mail, Lock, User, Building, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { Droplets, Mail, Lock, User as UserIcon, Building, Eye, EyeOff, ShieldCheck, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { UserRole } from "./LoginView";
 
 interface SignupViewProps {
@@ -43,237 +44,178 @@ export function RegisterView({ onSignup, onSwitchToLogin }: SignupViewProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#062229] via-[#0b3b46] to-[#1F7A8C] px-4 py-8 md:px-8">
-      <div className="mx-auto grid w-full max-w-6xl overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-lg lg:grid-cols-2">
-        <aside className="relative hidden flex-col overflow-hidden bg-gradient-to-br from-[#03191f] to-[#0a2f38] p-10 text-white lg:flex">
-          <div className="pointer-events-none absolute -right-14 -top-10 h-40 w-40 rounded-full bg-[#8fe1ef]/20 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-16 -left-10 h-52 w-52 rounded-full bg-[#1F7A8C]/35 blur-3xl" />
-          <div className="pointer-events-none absolute right-12 top-24 h-2 w-2 animate-pulse rounded-full bg-[#bdebf2]" />
-          <div className="pointer-events-none absolute right-24 top-[8.5rem] h-3 w-3 animate-pulse rounded-full bg-[#9dd8e3] [animation-delay:300ms]" />
-          <div className="pointer-events-none absolute right-16 top-[11.5rem] h-2 w-2 animate-pulse rounded-full bg-[#d5f4f8] [animation-delay:700ms]" />
+    <div className="min-h-screen bg-[#F0F7FF] flex items-center justify-center p-4 relative overflow-hidden">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full max-w-[1000px] grid lg:grid-cols-5 bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-blue-100"
+      >
+        {/* Left Side - Welcome & Spheres */}
+        <div className="lg:col-span-2 relative flex flex-col justify-center p-12 overflow-hidden bg-gradient-to-br from-[#1E40AF] to-[#3B82F6]">
+          {/* Animated 3D Spheres */}
+          <motion.div 
+            animate={{ y: [0, -30, 0], scale: [1, 1.1, 1] }}
+            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-10 top-10 w-56 h-56 bg-white/10 rounded-full blur-xl" 
+          />
+          <motion.div 
+            animate={{ y: [0, 20, 0], scale: [1, 1.05, 1] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute -left-20 bottom-20 w-48 h-48 bg-blue-300/20 rounded-full shadow-[inset_0_0_40px_rgba(255,255,255,0.2)]" 
+          />
 
-          <div>
-            <div className="mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#1F7A8C] to-[#BFE9F0] shadow-lg">
-              <Droplets size={30} />
-            </div>
-            <h1 className="mb-2 text-4xl font-bold leading-tight">AquaSure</h1>
-            <p className="text-sm text-[#cdeff4]">Create your account</p>
-          </div>
-
-          <div className="my-6 overflow-hidden rounded-3xl border border-white/10 bg-[#0d3b45]/75 p-5 backdrop-blur-sm">
-            <svg viewBox="0 0 430 250" className="h-56 w-full">
-              <rect x="18" y="30" width="230" height="170" rx="16" fill="#0f4652" stroke="#7ad3e2" strokeOpacity="0.35" />
-              <rect x="36" y="50" width="150" height="12" rx="6" fill="#8ddbe8" fillOpacity="0.45" />
-              <rect x="36" y="76" width="190" height="10" rx="5" fill="#d5f4f8" fillOpacity="0.25" />
-              <rect x="36" y="96" width="172" height="10" rx="5" fill="#d5f4f8" fillOpacity="0.25" />
-              <rect x="36" y="116" width="140" height="10" rx="5" fill="#d5f4f8" fillOpacity="0.25" />
-              <rect x="36" y="144" width="95" height="24" rx="12" fill="#57c5d8" />
-
-              <circle cx="315" cy="82" r="24" fill="#c8f1f7" />
-              <rect x="294" y="108" width="42" height="63" rx="15" fill="#9adce8" />
-              <rect x="333" y="120" width="42" height="11" rx="5" fill="#9adce8" />
-              <rect x="277" y="120" width="18" height="11" rx="5" fill="#9adce8" />
-              <path d="M375 124 L398 112 L397 121 L408 121 L408 127 L397 127 L398 136 Z" fill="#d5f4f8" />
-              <circle cx="307" cy="80" r="3" fill="#0a2f38" />
-              <circle cx="323" cy="80" r="3" fill="#0a2f38" />
-              <path d="M307 90 Q315 96 323 90" stroke="#0a2f38" strokeWidth="3" fill="none" strokeLinecap="round" />
-
-              <circle cx="272" cy="182" r="12" fill="#57c5d8" className="animate-pulse" />
-              <circle cx="304" cy="198" r="8" fill="#8ddbe8" className="animate-pulse [animation-delay:280ms]" />
-              <circle cx="330" cy="182" r="10" fill="#c8f1f7" className="animate-pulse [animation-delay:520ms]" />
-            </svg>
-          </div>
-
-            <div className="mt-auto space-y-4">
-            <div className="rounded-2xl border border-white/10 bg-[#0d3b45]/70 p-4 backdrop-blur-sm">
-              <p className="text-xs uppercase tracking-wider text-[#9fdce7]">Quick tip</p>
-              <p className="mt-2 text-sm text-[#d7f1f5]">Select your role first, then sign in.</p>
+          <div className="relative z-10 text-white">
+            <h1 className="text-4xl font-black tracking-tighter mb-2">JOIN US</h1>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-100/70">Create Account</p>
+            <div className="mt-8 space-y-4">
+              <p className="text-blue-100/60 text-xs leading-relaxed max-w-[200px]">
+                Start your journey into high-precision environmental data.
+              </p>
+              <div className="w-12 h-1 bg-white/20 rounded-full" />
             </div>
           </div>
+        </div>
 
-          <div className="mt-auto grid grid-cols-3 gap-3 pt-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
-              <div className="mx-auto h-2 w-2 animate-ping rounded-full bg-[#7ad3e2]" />
-              <p className="mt-2 text-xs text-[#d7f1f5]">Fast</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
-              <div className="mx-auto h-2 w-2 animate-ping rounded-full bg-[#7ad3e2]" />
-              <p className="mt-2 text-xs text-[#d7f1f5]">Smart</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
-              <div className="mx-auto h-2 w-2 animate-ping rounded-full bg-[#7ad3e2]" />
-              <p className="mt-2 text-xs text-[#d7f1f5]">Secure</p>
-            </div>
-          
-          </div>
-        </aside>
-
-        <div className="relative overflow-hidden p-6 sm:p-10">
-          <div className="pointer-events-none absolute -right-24 top-8 h-40 w-40 rounded-full bg-[#8ddbe8]/15 blur-3xl" />
-          <div className="pointer-events-none absolute -left-14 bottom-8 h-32 w-32 rounded-full bg-[#57c5d8]/15 blur-2xl" />
-          <div className="mx-auto w-full max-w-md rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm sm:p-6">
+        {/* Right Side - Form */}
+        <div className="lg:col-span-3 p-8 lg:p-12 bg-white overflow-y-auto max-h-[90vh] custom-scrollbar">
+          <div className="max-w-md mx-auto">
             <div className="mb-8 text-center lg:text-left">
-              <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#1F7A8C] to-[#BFE9F0] shadow-lg lg:hidden">
-                <Droplets size={28} className="text-white" />
-              </div>
-              <h2 className="mb-2 text-3xl font-bold text-white">Create Account</h2>
-            
+              <h2 className="text-4xl font-black text-gray-900 mb-2">Sign up</h2>
+              <p className="text-xs text-gray-400">Fill in your details to create an account</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="mb-2 block text-sm font-medium text-white">Full Name</label>
-                <div className="relative">
-                  <User className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#9dd8e3]" size={18} />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
+                    <UserIcon className="text-gray-400 group-focus-within:text-brand" size={16} />
+                  </div>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="John Doe"
-                    className="w-full rounded-xl border border-white/25 bg-white/15 py-3 pl-10 pr-4 text-white placeholder:text-white/60 outline-none transition focus:border-[#BFE9F0] focus:ring-2 focus:ring-[#BFE9F0]/40"
+                    placeholder="Full Name"
+                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-4 outline-none focus:bg-white focus:border-brand/20 transition-all placeholder:text-gray-400 text-sm font-medium"
                     required
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium text-white">Email Address</label>
-                <div className="relative">
-                  <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#9dd8e3]" size={18} />
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
+                    <Mail className="text-gray-400 group-focus-within:text-brand" size={16} />
+                  </div>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="john@organization.com"
-                    className="w-full rounded-xl border border-white/25 bg-white/15 py-3 pl-10 pr-4 text-white placeholder:text-white/60 outline-none transition focus:border-[#BFE9F0] focus:ring-2 focus:ring-[#BFE9F0]/40"
+                    placeholder="Email"
+                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-4 outline-none focus:bg-white focus:border-brand/20 transition-all placeholder:text-gray-400 text-sm font-medium"
                     required
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-medium text-white">Organization</label>
-                <div className="relative">
-                  <Building className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#9dd8e3]" size={18} />
-                  <input
-                    type="text"
-                    value={formData.organization}
-                    onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                    placeholder="Water Treatment Facility"
-                    className="w-full rounded-xl border border-white/25 bg-white/15 py-3 pl-10 pr-4 text-white placeholder:text-white/60 outline-none transition focus:border-[#BFE9F0] focus:ring-2 focus:ring-[#BFE9F0]/40"
-                    required
-                  />
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
+                  <Building className="text-gray-400 group-focus-within:text-brand" size={16} />
                 </div>
+                <input
+                  type="text"
+                  value={formData.organization}
+                  onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                  placeholder="Organization"
+                  className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-4 outline-none focus:bg-white focus:border-brand/20 transition-all placeholder:text-gray-400 text-sm font-medium"
+                  required
+                />
               </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-medium text-white">Role</label>
-                <div className="relative">
-                  <ShieldCheck className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#9dd8e3]" size={18} />
-                  <select
-                    value={formData.role}
-                    onChange={(e) => setFormData({ ...formData, role: e.target.value as UserRole })}
-                    className="w-full cursor-pointer appearance-none rounded-xl border border-white/25 bg-white/15 py-3 pl-10 pr-4 text-white outline-none transition focus:border-[#BFE9F0] focus:ring-2 focus:ring-[#BFE9F0]/40"
-                    required
-                  >
-                    <option value="officer" className="bg-[#0A2A2F] text-white">Environmental Officer</option>
-                    <option value="operator" className="bg-[#0A2A2F] text-white">Industry Operator</option>
-                    <option value="technician" className="bg-[#0A2A2F] text-white">Technician</option>
-                    <option value="researcher" className="bg-[#0A2A2F] text-white">Researcher</option>
-                    <option value="admin" className="bg-[#0A2A2F] text-white">Administrator</option>
-                  </select>
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
+                  <ShieldCheck className="text-gray-400 group-focus-within:text-brand" size={16} />
                 </div>
+                <select
+                  value={formData.role}
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value as UserRole })}
+                  className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-4 outline-none focus:bg-white focus:border-brand/20 transition-all appearance-none cursor-pointer text-sm font-medium text-gray-700"
+                  required
+                >
+                  <option value="officer">Environmental Officer</option>
+                  <option value="operator">Industry Operator</option>
+                  <option value="technician">Technician</option>
+                  <option value="researcher">Researcher</option>
+                  <option value="admin">Administrator</option>
+                </select>
               </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-medium text-white">Password</label>
-                <div className="relative">
-                  <Lock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#9dd8e3]" size={18} />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
+                    <Lock className="text-gray-400 group-focus-within:text-brand" size={16} />
+                  </div>
                   <input
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    placeholder="Create password"
-                    className="w-full rounded-xl border border-white/25 bg-white/15 py-3 pl-10 pr-12 text-white placeholder:text-white/60 outline-none transition focus:border-[#BFE9F0] focus:ring-2 focus:ring-[#BFE9F0]/40"
+                    placeholder="Password"
+                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-10 outline-none focus:bg-white focus:border-brand/20 transition-all placeholder:text-gray-400 text-sm font-medium"
                     required
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#b9e8ef] transition hover:text-white"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand transition-colors">
+                    {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
                 </div>
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium text-white">Confirm Password</label>
-                <div className="relative">
-                  <Lock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#9dd8e3]" size={18} />
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
+                    <Lock className="text-gray-400 group-focus-within:text-brand" size={16} />
+                  </div>
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                    placeholder="Repeat password"
-                    className="w-full rounded-xl border border-white/25 bg-white/15 py-3 pl-10 pr-12 text-white placeholder:text-white/60 outline-none transition focus:border-[#BFE9F0] focus:ring-2 focus:ring-[#BFE9F0]/40"
+                    placeholder="Confirm"
+                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-10 outline-none focus:bg-white focus:border-brand/20 transition-all placeholder:text-gray-400 text-sm font-medium"
                     required
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#b9e8ef] transition hover:text-white"
-                    aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
-                  >
-                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand transition-colors">
+                    {showConfirmPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-start gap-2">
+              <div className="flex items-start gap-3 p-1">
                 <input
                   type="checkbox"
                   id="terms"
                   checked={agreedToTerms}
                   onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="mt-1 h-4 w-4 rounded accent-[#1F7A8C]"
+                  className="mt-1 w-4 h-4 rounded border-gray-300 text-brand focus:ring-brand accent-brand"
                 />
-                <label htmlFor="terms" className="text-sm text-white/85">
-                  I agree to the{" "}
-                  <button type="button" className="font-medium text-[#d5f4f8] transition hover:text-white">
-                    Terms
-                  </button>{" "}
-                  and{" "}
-                  <button type="button" className="font-medium text-[#d5f4f8] transition hover:text-white">
-                    Privacy Policy
-                  </button>
-                  .
+                <label htmlFor="terms" className="text-[10px] text-gray-500 font-bold leading-relaxed uppercase tracking-wider">
+                  I agree to the <button type="button" className="text-brand font-black">Terms</button> and <button type="button" className="text-brand font-black">Privacy Policy</button>.
                 </label>
               </div>
 
-              <div className="space-y-3 pt-1">
+              <button
+                type="submit"
+                className="w-full bg-[#1E3A8A] hover:bg-[#1E40AF] text-white font-black py-4 rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 mt-2 text-sm"
+              >
+                Create Account <ArrowRight size={18} />
+              </button>
+
+              <p className="text-center text-gray-400 text-[11px] font-bold">
+                Already have an account?{" "}
                 <button
-                  type="submit"
-                  className="w-full rounded-xl bg-gradient-to-r from-[#1F7A8C] to-[#8ddbe8] py-3 font-semibold text-white shadow-lg transition hover:brightness-110"
+                  type="button"
+                  onClick={onSwitchToLogin}
+                  className="text-brand hover:underline"
                 >
-                  Create Account
+                  Sign In
                 </button>
-                <p className="text-center text-sm text-white/80">
-                  Already have an account?{" "}
-                  <button
-                    type="button"
-                    onClick={onSwitchToLogin}
-                    className="font-semibold text-[#d5f4f8] transition hover:text-white"
-                  >
-                    Sign in
-                  </button>
-                </p>
-              </div>
+              </p>
             </form>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
+

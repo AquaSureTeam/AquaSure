@@ -49,45 +49,28 @@ export function MainChart({ timePeriod, onTimePeriodChange }: MainChartProps) {
   const waterQualityData = getData();
 
   return (
-    <div className="backdrop-blur-xl bg-white/80 border border-white/30 rounded-xl shadow-lg p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="glass rounded-[2.5rem] p-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">
-            {timePeriod === "24H" ? "24-Hour" : timePeriod === "7D" ? "7-Day" : "30-Day"} Water Quality Trends
+          <h2 className="text-2xl font-black text-gray-900 tracking-tight">
+            {timePeriod === "24H" ? "24-Hour" : timePeriod === "7D" ? "7-Day" : "30-Day"} <span className="text-blue-600">Water Quality Trends</span>
           </h2>
-          <p className="text-sm text-gray-600 mt-1">Real-time monitoring data from all sensors</p>
+          <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-widest">Real-time monitoring telemetry</p>
         </div>
-        <div className="flex gap-2">
-          <button 
-            onClick={() => onTimePeriodChange("24H")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              timePeriod === "24H" 
-                ? "bg-gradient-to-r from-[#1F7A8C] to-[#BFE9F0] text-white shadow-md" 
-                : "backdrop-blur-sm bg-white/50 border border-white/30 text-gray-700 hover:bg-white/70"
-            }`}
-          >
-            24H
-          </button>
-          <button 
-            onClick={() => onTimePeriodChange("7D")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              timePeriod === "7D" 
-                ? "bg-gradient-to-r from-[#1F7A8C] to-[#BFE9F0] text-white shadow-md" 
-                : "backdrop-blur-sm bg-white/50 border border-white/30 text-gray-700 hover:bg-white/70"
-            }`}
-          >
-            7D
-          </button>
-          <button 
-            onClick={() => onTimePeriodChange("30D")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              timePeriod === "30D" 
-                ? "bg-gradient-to-r from-[#1F7A8C] to-[#BFE9F0] text-white shadow-md" 
-                : "backdrop-blur-sm bg-white/50 border border-white/30 text-gray-700 hover:bg-white/70"
-            }`}
-          >
-            30D
-          </button>
+        <div className="flex gap-2 bg-gray-50 p-1.5 rounded-2xl border border-gray-100">
+          {(["24H", "7D", "30D"] as const).map((period) => (
+            <button 
+              key={period}
+              onClick={() => onTimePeriodChange(period)}
+              className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                timePeriod === period 
+                  ? "bg-blue-600 text-white shadow-lg shadow-blue-200" 
+                  : "text-gray-400 hover:text-gray-600 hover:bg-white"
+              }`}
+            >
+              {period}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -96,33 +79,35 @@ export function MainChart({ timePeriod, onTimePeriodChange }: MainChartProps) {
           <AreaChart data={waterQualityData}>
             <defs>
               <linearGradient id="colorPh" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#1F7A8C" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#1F7A8C" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#2ECC71" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#2ECC71" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#60A5FA" stopOpacity={0.2}/>
+                <stop offset="95%" stopColor="#60A5FA" stopOpacity={0}/>
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-            <XAxis dataKey="time" stroke="#6B7280" />
-            <YAxis yAxisId="left" stroke="#6B7280" />
-            <YAxis yAxisId="right" orientation="right" stroke="#6B7280" />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+            <XAxis dataKey="time" stroke="#94a3b8" style={{ fontSize: 10, fontWeight: "bold" }} axisLine={false} tickLine={false} />
+            <YAxis yAxisId="left" stroke="#94a3b8" style={{ fontSize: 10, fontWeight: "bold" }} axisLine={false} tickLine={false} />
+            <YAxis yAxisId="right" orientation="right" stroke="#94a3b8" style={{ fontSize: 10, fontWeight: "bold" }} axisLine={false} tickLine={false} />
             <Tooltip
               contentStyle={{
-                backgroundColor: "#FFFFFF",
-                border: "1px solid #E5E7EB",
-                borderRadius: "8px",
+                backgroundColor: "rgba(255, 255, 255, 0.95)",
+                backdropFilter: "blur(10px)",
+                border: "none",
+                borderRadius: "16px",
+                boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)",
                 padding: "12px",
               }}
             />
-            <Legend />
+            <Legend wrapperStyle={{ paddingTop: "20px", fontSize: "11px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "1px" }} />
             <Area
               yAxisId="left"
               type="monotone"
               dataKey="ph"
-              stroke="#1F7A8C"
-              strokeWidth={2}
+              stroke="#2563eb"
+              strokeWidth={4}
               fill="url(#colorPh)"
               name="pH Level"
             />
@@ -130,8 +115,8 @@ export function MainChart({ timePeriod, onTimePeriodChange }: MainChartProps) {
               yAxisId="right"
               type="monotone"
               dataKey="temp"
-              stroke="#2ECC71"
-              strokeWidth={2}
+              stroke="#60a5fa"
+              strokeWidth={3}
               fill="url(#colorTemp)"
               name="Temperature (°C)"
             />

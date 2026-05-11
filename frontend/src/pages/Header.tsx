@@ -1,14 +1,15 @@
-import { Bell, Search, User, Wifi, Calendar, Clock } from "lucide-react";
+import { Bell, Search, User, Wifi, Calendar, Clock, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 interface HeaderProps {
   onNotificationClick: () => void;
   notificationCount: number;
   userName?: string;
+  userRole?: string;
 }
 
-
-export function Header({ onNotificationClick, notificationCount, userName = "Admin" }: HeaderProps) {
+export function Header({ onNotificationClick, notificationCount, userName = "Admin", userRole }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -25,77 +26,80 @@ export function Header({ onNotificationClick, notificationCount, userName = "Adm
   };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   };
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   };
-``
+
   return (
-    <header className="backdrop-blur-xl bg-white/70 border-b border-white/20 shadow-sm">
-      <div className="flex items-center justify-between px-8 py-4">
+    <header className="px-8 py-6 bg-transparent relative z-20">
+      <div className="flex items-center justify-between">
+        {/* Search Bar */}
         <div className="flex-1 max-w-xl">
           <form onSubmit={handleSearch}>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <div className="relative group">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={18} />
               <input
                 type="text"
-                placeholder="Search sensors, locations, alerts..."
+                placeholder="Search metrics, reports, sensors..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white/50 backdrop-blur-sm border border-white/30 rounded-xl focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/20 transition-all placeholder-gray-500"
+                className="w-full pl-14 pr-6 py-4 bg-white/40 backdrop-blur-xl border border-white/20 rounded-[2rem] shadow-sm focus:outline-none focus:ring-8 focus:ring-blue-600/5 focus:border-blue-500/50 transition-all placeholder:text-gray-400 font-bold text-sm"
               />
             </div>
           </form>
         </div>
 
-        {/* Status & Actions */}
-        <div className="flex items-center gap-3 ml-8">
-          {/* Date & Time */}
-          <div className="hidden lg:flex items-center gap-4 px-4 py-2 backdrop-blur-sm bg-white/50 border border-white/30 rounded-xl">
-            <div className="flex items-center gap-2 text-sm text-gray-700">
-              <Calendar size={16} className="text-[#1F7A8C]" />
-              <span className="font-medium">{formatDate(currentTime)}</span>
+        {/* Right Side Tools */}
+        <div className="flex items-center gap-6">
+          {/* Time Display */}
+          <div className="hidden xl:flex items-center gap-4 bg-white/40 backdrop-blur-xl border border-white/20 px-6 py-3.5 rounded-[2rem] shadow-sm">
+            <div className="flex items-center gap-2.5 text-[10px] font-black text-gray-400 uppercase tracking-[0.15em]">
+              <Calendar size={14} className="text-blue-600" />
+              <span>{formatDate(currentTime)}</span>
             </div>
-            <div className="w-px h-4 bg-gray-300"></div>
-            <div className="flex items-center gap-2 text-sm text-gray-700">
-              <Clock size={16} className="text-[#1F7A8C]" />
-              <span className="font-mono font-medium">{formatTime(currentTime)}</span>
+            <div className="w-px h-4 bg-gray-200/50" />
+            <div className="flex items-center gap-2.5 text-[10px] font-black text-gray-900 uppercase tracking-[0.15em]">
+              <Clock size={14} className="text-blue-600" />
+              <span>{formatTime(currentTime)}</span>
             </div>
           </div>
 
-          {/* System Health */}
-          <div className="flex items-center gap-2 px-4 py-2.5 backdrop-blur-sm bg-[#2ECC71]/10 border border-[#2ECC71]/30 text-[#2ECC71] rounded-xl shadow-sm">
-            <Wifi size={18} />
-            <span className="text-sm font-medium hidden md:inline">All Systems Operational</span>
-            <span className="text-sm font-medium md:hidden">Online</span>
+          {/* System Status */}
+          <div className="hidden md:flex items-center gap-3 bg-blue-50 border border-blue-100/50 px-5 py-3.5 rounded-[2rem] text-blue-600">
+            <div className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse shadow-lg shadow-blue-400" />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Data Live</span>
           </div>
 
           {/* Notifications */}
           <button 
             onClick={onNotificationClick}
-            className="relative p-2.5 hover:bg-white/50 backdrop-blur-sm rounded-xl transition-all border border-transparent hover:border-white/30"
+            className="relative w-14 h-14 flex items-center justify-center bg-white/40 backdrop-blur-xl border border-white/20 rounded-[1.5rem] text-gray-400 hover:text-blue-600 hover:border-blue-500/30 transition-all group shadow-sm"
           >
-            <Bell size={20} className="text-gray-600" />
+            <Bell size={22} className="group-hover:scale-110 transition-transform" />
             {notificationCount > 0 && (
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center border-2 border-white shadow-lg">
-                <span className="text-[10px] font-bold text-white">{notificationCount}</span>
-              </div>
+              <span className="absolute top-3 right-3 w-4 h-4 bg-blue-600 text-white text-[9px] font-black rounded-full flex items-center justify-center shadow-lg shadow-blue-500/40">
+                {notificationCount}
+              </span>
             )}
           </button>
 
-          {/* User */}
-        <button className="flex items-center gap-3 px-3 py-2 hover:bg-white/50 backdrop-blur-sm rounded-xl transition-all border border-transparent hover:border-white/30">
-          <div className="w-9 h-9 bg-gradient-to-br from-[#1F7A8C] to-[#BFE9F0] rounded-full flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-sm">{userName?.charAt(0)}</span>
-          </div>
-          <div className="hidden md:block text-left">
-          <p className="text-sm font-semibold text-gray-700">{userName}</p>
-        </div>
-    </button>
+          {/* Quick Profile/Settings */}
+          <button className="flex items-center gap-3 bg-white/40 backdrop-blur-xl border border-white/20 p-2 pr-5 rounded-[2rem] hover:border-blue-500/30 transition-all shadow-sm group">
+            <div className="w-10 h-10 bg-blue-600 text-white rounded-[1.2rem] flex items-center justify-center font-black text-sm shadow-lg shadow-blue-200 group-hover:scale-105 transition-transform">
+              {userName.charAt(0)}
+            </div>
+            <div className="hidden lg:block text-left">
+              <p className="text-xs font-black text-gray-900 leading-tight">{userName}</p>
+              <p className="text-[9px] font-black text-gray-400 uppercase tracking-tighter">Verified User</p>
+            </div>
+            <ChevronDown size={14} className="text-gray-400 ml-1 group-hover:translate-y-0.5 transition-transform" />
+          </button>
         </div>
       </div>
     </header>
   );
+}
 }

@@ -1,5 +1,6 @@
-import { Wrench, Activity, Power, RotateCcw, Settings, FileText, CheckCircle2, AlertTriangle } from "lucide-react";
+import { Wrench, Activity, Power, RotateCcw, Settings, FileText, CheckCircle2, AlertTriangle, Battery, Calendar } from "lucide-react";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function TechnicianDashboard() {
   const [sensors, setSensors] = useState([
@@ -33,102 +34,103 @@ export function TechnicianDashboard() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="p-8 space-y-8 relative"
+    >
+      {/* Decorative Blob */}
+      <div className="absolute top-0 right-0 -z-10 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px]" />
+      
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#0A2A2F]">Technician Dashboard</h1>
-          <p className="text-sm text-gray-600 mt-1">Industrial Maintenance Control System</p>
+          <h1 className="text-4xl font-black text-gray-900 tracking-tight">System <span className="text-blue-600">Technician</span></h1>
+          <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-[0.2em]">Industrial Maintenance Control</p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-xl px-4 py-2 shadow-lg">
-            <span className="text-xs text-gray-600">System Status:</span>
-            <span className="ml-2 font-semibold text-[#2ECC71]">Online</span>
+        <div className="flex items-center gap-4">
+          <div className="glass px-6 py-3 rounded-2xl flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Main Controller</span>
+            <span className="text-sm font-black text-green-600 uppercase">Online</span>
           </div>
         </div>
       </div>
 
       {/* System Controls */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Manual Valve Override */}
-        <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-2xl shadow-xl p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Power size={20} className="text-[#1F7A8C]" />
-            <h2 className="text-lg font-semibold text-[#0A2A2F]">Valve Override</h2>
+        <motion.div whileHover={{ y: -5 }} className="glass rounded-[2.5rem] p-8 flex flex-col items-center text-center">
+          <div className="mb-6 p-4 bg-blue-50 rounded-3xl">
+            <Power size={32} className="text-blue-600" />
           </div>
-          <div className="flex flex-col items-center py-4">
-            <div
-              className={`w-20 h-20 rounded-full flex items-center justify-center mb-4 transition-all ${
-                valveOverride
-                  ? "bg-gradient-to-br from-[#F39C12] to-[#E67E22] shadow-lg shadow-orange-500/50"
-                  : "bg-gradient-to-br from-gray-300 to-gray-400"
-              }`}
-            >
-              <Power size={36} className="text-white" />
-            </div>
-            <p className="text-sm font-medium text-[#0A2A2F] mb-3">
-              {valveOverride ? "Manual Control Active" : "Auto Mode"}
-            </p>
-            <button
-              onClick={() => setValveOverride(!valveOverride)}
-              className={`px-5 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-200 ${
-                valveOverride
-                  ? "bg-gradient-to-r from-gray-600 to-gray-700 text-white"
-                  : "bg-gradient-to-r from-[#F39C12] to-[#E67E22] text-white"
-              }`}
-            >
-              {valveOverride ? "Disable Override" : "Enable Override"}
-            </button>
-          </div>
-        </div>
+          <h2 className="text-lg font-black text-gray-900 uppercase tracking-tight mb-6">Valve Override</h2>
+          <motion.div
+            animate={{ 
+              rotate: valveOverride ? [0, 10, -10, 0] : 0,
+              scale: valveOverride ? [1, 1.1, 1] : 1
+            }}
+            transition={{ duration: 0.5, repeat: valveOverride ? Infinity : 0 }}
+            className={`w-20 h-20 rounded-full flex items-center justify-center mb-4 ${
+              valveOverride ? "bg-amber-500 text-white shadow-lg shadow-amber-200" : "bg-gray-100 text-gray-400"
+            }`}
+          >
+            <Power size={36} />
+          </motion.div>
+          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">
+            {valveOverride ? "Manual Mode Active" : "Automated System"}
+          </p>
+          <button
+            onClick={() => setValveOverride(!valveOverride)}
+            className={`w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${
+              valveOverride ? "bg-gray-900 text-white" : "bg-blue-600 text-white shadow-lg shadow-blue-200"
+            }`}
+          >
+            {valveOverride ? "Release Control" : "Take Control"}
+          </button>
+        </motion.div>
 
         {/* System Reset */}
-        <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-2xl shadow-xl p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <RotateCcw size={20} className="text-[#E74C3C]" />
-            <h2 className="text-lg font-semibold text-[#0A2A2F]">System Reset</h2>
+        <motion.div whileHover={{ y: -5 }} className="glass rounded-[2.5rem] p-8 flex flex-col items-center text-center">
+          <div className="mb-6 p-4 bg-red-50 rounded-3xl">
+            <RotateCcw size={32} className="text-red-500" />
           </div>
-          <div className="flex flex-col items-center py-4">
-            <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-gradient-to-br from-[#E74C3C] to-[#C0392B] shadow-lg">
-              <RotateCcw size={36} className="text-white" />
-            </div>
-            <p className="text-sm text-gray-600 mb-3 text-center">
-              Restart all sensors and controllers
-            </p>
-            <button
-              onClick={handleSystemReset}
-              className="px-5 py-2 bg-gradient-to-r from-[#E74C3C] to-[#C0392B] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-200"
-            >
-              Reset System
-            </button>
+          <h2 className="text-lg font-black text-gray-900 uppercase tracking-tight mb-6">Global Reset</h2>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-red-500 text-white shadow-lg shadow-red-200">
+            <RotateCcw size={36} />
           </div>
-        </div>
+          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">Full Controller Restart</p>
+          <button
+            onClick={handleSystemReset}
+            className="w-full py-4 bg-red-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-200 hover:bg-red-600 transition-all"
+          >
+            Initiate Reset
+          </button>
+        </motion.div>
 
-        {/* Device Status Summary */}
-        <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-2xl shadow-xl p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Activity size={20} className="text-[#2ECC71]" />
-            <h2 className="text-lg font-semibold text-[#0A2A2F]">Device Summary</h2>
+        {/* Device Summary */}
+        <motion.div whileHover={{ y: -5 }} className="glass rounded-[2.5rem] p-8">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+              <Activity size={24} />
+            </div>
+            <h2 className="text-lg font-black text-gray-900 uppercase tracking-tight">Summary</h2>
           </div>
-          <div className="space-y-4 py-2">
+          <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Operational Sensors</span>
-              <span className="text-lg font-bold text-[#2ECC71]">3/4</span>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Active Nodes</span>
+              <span className="text-xl font-black text-blue-600">04/04</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Warnings</span>
-              <span className="text-lg font-bold text-[#F39C12]">1</span>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Errors</span>
+              <span className="text-xl font-black text-amber-500">01</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Avg Battery</span>
-              <span className="text-lg font-bold text-[#1F7A8C]">75%</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Next Calibration</span>
-              <span className="text-lg font-bold text-[#0A2A2F]">15 days</span>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Health</span>
+              <span className="text-xl font-black text-green-500">92%</span>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Sensor Health Status Cards */}
@@ -163,7 +165,7 @@ export function TechnicianDashboard() {
                 </div>
                 <button
                   onClick={() => handleCalibrate(sensor.id)}
-                  className="px-3 py-1.5 bg-gradient-to-r from-[#1F7A8C] to-[#BFE9F0] text-white text-xs font-semibold rounded-lg shadow hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+                  className="px-4 py-2 bg-blue-600 text-white text-xs font-black uppercase tracking-wider rounded-xl shadow hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
                 >
                   Calibrate
                 </button>

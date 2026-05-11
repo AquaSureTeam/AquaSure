@@ -14,7 +14,7 @@ import { OperatorDashboard } from "./pages/OperatorDashboard";
 import { TechnicianDashboard } from "./pages/TechnicianDashboard";
 import { ResearcherDashboard } from "./pages/ResearcherDashboard";
 import { UserManagementView } from "./pages/UserManagementView";
-
+import { motion } from "framer-motion";
 
 
 function App() {
@@ -126,7 +126,30 @@ const handleLogin = (userName: string, email: string, password: string, role: Us
   }
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-[#F4FBFC] to-[#E0F7FA]">
+    <div className="flex h-screen bg-[#F0F7FF] overflow-hidden relative">
+      {/* Decorative elements - Deep Blue / Water theme */}
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.2, 1],
+          rotate: [0, 90, 0],
+          x: [0, 50, 0],
+          y: [0, 30, 0],
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        className="fixed -top-24 -left-24 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl pointer-events-none" 
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.3, 1],
+          rotate: [0, -45, 0],
+          x: [0, -30, 0],
+          y: [0, 50, 0],
+        }}
+        transition={{ duration: 30, repeat: Infinity, ease: "linear", delay: 2 }}
+        className="fixed -bottom-48 -right-48 w-[30rem] h-[30rem] bg-blue-400/10 rounded-full blur-3xl pointer-events-none" 
+      />
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-blue-200/5 rounded-full blur-[120px] pointer-events-none" />
+      
       <Sidebar 
         activeView={activeView} 
         onViewChange={setActiveView}
@@ -135,9 +158,7 @@ const handleLogin = (userName: string, email: string, password: string, role: Us
         userRole={userRole}
       />
 
-
-      <div className="flex-1 flex flex-col overflow-hidden">
-
+      <div className="flex-1 flex flex-col overflow-hidden relative z-10">
         <Header 
           onNotificationClick={handleNotificationClick}
           notificationCount={notificationCount}
@@ -145,13 +166,15 @@ const handleLogin = (userName: string, email: string, password: string, role: Us
           userRole={userRole}
         />
 
-
-        <main className="flex-1 overflow-y-auto">
-          {renderView()}
+        <main className="flex-1 overflow-y-auto px-8 py-6">
+          <div className="max-w-7xl mx-auto">
+            {renderView()}
+          </div>
         </main>
       </div>
     </div>
   );
+
 }
 
 export default App;

@@ -1,5 +1,6 @@
-import { Activity, Droplets, AlertTriangle, Settings, BarChart3, Home, LogOut, ShieldCheck, Users, MapPin, Wrench, Database, FileText, Gauge, TrendingUp } from "lucide-react";
+import { Activity, Droplets, AlertTriangle, Settings, BarChart3, Home, LogOut, ShieldCheck, Users, MapPin, Wrench, Database, FileText, Gauge, TrendingUp, ChevronRight } from "lucide-react";
 import { UserRole } from "./LoginView";
+import { motion } from "framer-motion";
 
 interface SidebarProps {
   activeView: string;
@@ -11,9 +12,13 @@ interface SidebarProps {
 
 export function Sidebar({ activeView, onViewChange, onLogout, userName = "Admin", userRole }: SidebarProps) {
   const getMenuItems = () => {
+    const baseItems = [
+      { icon: Home, label: "Dashboard", id: "dashboard" },
+    ];
+
     if (userRole === "admin") {
       return [
-        { icon: Home, label: "Dashboard", id: "dashboard" },
+        ...baseItems,
         { icon: Droplets, label: "Water Quality", id: "water-quality" },
         { icon: Activity, label: "Sensors", id: "sensors" },
         { icon: BarChart3, label: "Analytics", id: "analytics" },
@@ -23,145 +28,113 @@ export function Sidebar({ activeView, onViewChange, onLogout, userName = "Admin"
       ];
     }
 
-    // Environmental Officer menu items
-    if (userRole === "officer") {
-      return [
-        { icon: Home, label: "Command Center", id: "dashboard" },
-      
-      ];
-    }
-
-    // Industry Operator menu items
-    if (userRole === "operator") {
-      return [
-        { icon: Home, label: "My Station", id: "dashboard" },
-     
-      ];
-    }
-
-    // Technician menu items
-    if (userRole === "technician") {
-      return [
-        { icon: Home, label: "Maintenance Hub", id: "dashboard" },
-    
-      ];
-    }
-
-    // Researcher menu items
-    if (userRole === "researcher") {
-      return [
-        { icon: Home, label: "Data Overview", id: "dashboard" },
-      
-      ];
-    }
-
-    // Default fallback
-    return [
-      { icon: Home, label: "Dashboard", id: "dashboard" },
-    ];
+    return baseItems;
   };
 
   const menuItems = getMenuItems();
 
   const getRoleLabel = (role: UserRole): string => {
     const roleLabels: Record<UserRole, string> = {
-      admin: "System Administrator",
-      officer: "Environmental Officer",
-      operator: "Industry Operator",
-      technician: "System Technician",
-      researcher: "Research Analyst",
+      admin: "Administrator",
+      officer: "Env. Officer",
+      operator: "Operator",
+      technician: "Technician",
+      researcher: "Researcher",
     };
     return roleLabels[role];
   };
 
-  const getRoleBadgeColor = (role: UserRole): string => {
-    const badgeColors: Record<UserRole, string> = {
-      admin: "bg-purple-500/20 text-purple-300 border-purple-500/30",
-      officer: "bg-blue-500/20 text-blue-300 border-blue-500/30",
-      operator: "bg-green-500/20 text-green-300 border-green-500/30",
-      technician: "bg-orange-500/20 text-orange-300 border-orange-500/30",
-      researcher: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
-    };
-    return badgeColors[role];
-  };
-
   return (
-    <div className="w-64 h-screen bg-gradient-to-b from-[#0A2A2F] to-[#1F7A8C]/20 backdrop-blur-xl border-r border-white/10 text-white flex flex-col">
-      <div className="p-6 border-b border-white/10">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-[#1F7A8C] to-[#BFE9F0] rounded-lg flex items-center justify-center shadow-lg">
-            <Droplets size={24} />
-          </div>
+    <div className="w-80 h-screen bg-white/40 backdrop-blur-3xl border-r border-white/20 flex flex-col relative z-20 shadow-2xl">
+      {/* Logo Section */}
+      <div className="p-10">
+        <div className="flex items-center gap-5">
+          <motion.div 
+            whileHover={{ rotate: 90, scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 300 }}
+            className="w-14 h-14 bg-blue-600 rounded-[1.5rem] flex items-center justify-center shadow-2xl shadow-blue-400/30"
+          >
+            <Droplets size={28} className="text-white" />
+          </motion.div>
           <div>
-            <h1 className="font-bold text-xl">AquaSure</h1>
-            <p className="text-xs text-[#BFE9F0]">Environmental Monitor</p>
+            <h1 className="font-black text-3xl tracking-tighter text-gray-900 leading-none">AquaSure</h1>
+            <div className="flex items-center gap-2 mt-1.5">
+              <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse shadow-lg shadow-blue-400" />
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">Secure Core</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Role Badge */}
-      <div className="px-4 py-3">
-        <div className={`${getRoleBadgeColor(userRole)} border rounded-lg px-3 py-2 text-center`}>
-          <div className="flex items-center justify-center gap-2">
-            <ShieldCheck size={14} />
-            <span className="text-xs font-semibold">{getRoleLabel(userRole)}</span>
+      {/* User Profile Card */}
+      <div className="px-6 mb-10">
+        <div className="glass bg-white/60 p-5 rounded-[2.5rem] border-white/40">
+          <div className="flex items-center gap-4 mb-5">
+            <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black text-lg shadow-xl shadow-blue-200">
+              {userName.charAt(0)}
+            </div>
+            <div className="overflow-hidden">
+              <p className="text-sm font-black text-gray-900 truncate leading-none mb-1">{userName}</p>
+              <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest truncate">{getRoleLabel(userRole)}</p>
+            </div>
           </div>
+          <button 
+            onClick={onLogout}
+            className="w-full py-3 px-4 flex items-center justify-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-white bg-white hover:bg-blue-600 rounded-2xl border border-gray-100 hover:border-blue-600 transition-all duration-300 shadow-sm"
+          >
+            <LogOut size={14} />
+            Termination Session
+          </button>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 overflow-y-auto">
+      <nav className="flex-1 px-4 overflow-y-auto custom-scrollbar">
         <ul className="space-y-2">
-          {menuItems.map((item) => (
-            <li key={item.id}>
-              <button
-                onClick={() => onViewChange(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                  activeView === item.id
-                    ? "bg-white/20 backdrop-blur-sm text-white shadow-lg border border-white/30"
-                    : "text-gray-300 hover:bg-white/10 hover:backdrop-blur-sm hover:text-white"
-                }`}
-              >
-                <item.icon size={20} />
-                <span className="text-sm font-medium">{item.label}</span>
-              </button>
-            </li>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = activeView === item.id;
+            return (
+              <li key={item.id}>
+                <button
+                  onClick={() => onViewChange(item.id)}
+                  className={`w-full group flex items-center gap-4 px-6 py-4 rounded-[1.5rem] transition-all duration-500 relative ${
+                    isActive
+                      ? "bg-blue-600 text-white shadow-xl shadow-blue-300/50"
+                      : "text-gray-400 hover:text-blue-600 hover:bg-blue-50/50"
+                  }`}
+                >
+                  <item.icon size={22} className={isActive ? "text-white" : "group-hover:scale-110 transition-transform"} />
+                  <span className="text-[11px] font-black uppercase tracking-widest flex-1 text-left">{item.label}</span>
+                  {isActive && (
+                    <motion.div layoutId="active-pill" className="absolute right-3 w-1.5 h-6 bg-white/30 rounded-full" />
+                  )}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </nav>
-      <div className="p-4 border-t border-white/10 space-y-3">
-   
-        <div className="backdrop-blur-sm bg-white/10 border border-white/20 rounded-lg p-3">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#1F7A8C] to-[#BFE9F0] rounded-full flex items-center justify-center text-sm font-bold">
-              {userName.charAt(0)}
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-white">{userName}</p>
-              <div className="flex items-center gap-1">
-                <div className="w-2 h-2 bg-[#2ECC71] rounded-full"></div>
-                <p className="text-xs text-[#BFE9F0]">Active</p>
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={onLogout}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-200 rounded-lg text-sm transition-all duration-200"
-          >
-            <LogOut size={16} />
-            <span>Logout</span>
-          </button>
-        </div>
 
-    
-        <div className="backdrop-blur-sm bg-white/10 border border-white/20 rounded-lg p-3">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-2 h-2 bg-[#2ECC71] rounded-full animate-pulse shadow-lg shadow-[#2ECC71]/50"></div>
-            <span className="text-xs font-medium">System Online</span>
+      {/* Bottom Health Bar */}
+      <div className="p-8">
+        <div className="p-6 rounded-[2rem] bg-gray-50/50 border border-gray-100">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Network integrity</span>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-blue-600 shadow-lg shadow-blue-400" />
+              <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">99.9%</span>
+            </div>
           </div>
-          <p className="text-xs text-gray-400">Last updated: Just now</p>
+          <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: "99.9%" }}
+              className="h-full bg-blue-600" 
+            />
+          </div>
         </div>
       </div>
     </div>
   );
-}
+  );
+}
