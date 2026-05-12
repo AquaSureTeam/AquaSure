@@ -87,12 +87,12 @@ export function UserManagementView() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tight">User <span className="text-blue-600">Access</span> Management</h1>
-          <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Administrative Control & Identity Services</p>
+          <h1 className="text-4xl font-black text-gray-900 tracking-tight">Staff <span className="text-blue-600">Access</span> Control</h1>
+          <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Member Management & Identity Center</p>
         </div>
         <div className="flex items-center gap-4 bg-blue-600 text-white px-8 py-4 rounded-[2rem] shadow-xl shadow-blue-200">
           <ShieldCheck size={20} />
-          <span className="text-[10px] font-black uppercase tracking-[0.2em]">Restricted Administrator Access</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em]">Authorized Access Only</span>
         </div>
       </div>
 
@@ -106,7 +106,7 @@ export function UserManagementView() {
               <div className="p-4 bg-blue-50 rounded-2xl text-blue-600">
                 <UserPlus size={24} />
               </div>
-              <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Deploy New Agent</h2>
+              <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Register New Member</h2>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-8">
@@ -235,7 +235,7 @@ export function UserManagementView() {
                   />
                   <label htmlFor="sendSMS" className="text-[10px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-2">
                     <Send size={14} />
-                    Notify agent via encrypted SMS
+                    Notify member via SMS
                   </label>
                 </div>
               </div>
@@ -244,7 +244,7 @@ export function UserManagementView() {
                 type="submit"
                 className="w-full py-6 bg-blue-600 text-white font-black uppercase tracking-[0.3em] rounded-[2rem] shadow-2xl shadow-blue-300 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-[0.98]"
               >
-                Execute Identity Creation
+                Register Member
               </button>
             </form>
           </div>
@@ -258,10 +258,10 @@ export function UserManagementView() {
              <div className="flex items-center justify-between mb-10">
                <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight flex items-center gap-4">
                  <Shield className="text-blue-600" />
-                 Active Directory
+                 Staff Directory
                </h2>
                <div className="px-4 py-2 bg-blue-50 rounded-xl text-[10px] font-black text-blue-600 uppercase tracking-widest">
-                 {users.length} Records
+                 {users.length} Members
                </div>
              </div>
 

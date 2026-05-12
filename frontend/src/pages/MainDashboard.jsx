@@ -43,8 +43,8 @@ export function DashboardView() {
           </div>
         </div>
         <div className="text-center">
-          <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tight">Establishing Link</h2>
-          <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-widest">Synchronizing Secure Data Protocol...</p>
+          <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tight">Loading Dashboard</h2>
+          <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-widest">Synchronizing System Data...</p>
         </div>
       </div>
     );
@@ -59,8 +59,8 @@ export function DashboardView() {
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div>
-            <h1 className="text-4xl font-black text-gray-900 tracking-tight">Main <span className="text-blue-600">Command</span> Dashboard</h1>
-            <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Administrative Data Integration Center</p>
+            <h1 className="text-4xl font-black text-gray-900 tracking-tight">System <span className="text-blue-600">Overview</span> Dashboard</h1>
+            <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Management & Data Integration Center</p>
           </div>
           <div className="flex items-center gap-4 bg-white/40 backdrop-blur-xl border border-white/20 px-6 py-4 rounded-[2rem] shadow-sm">
             <ShieldCheck className="text-blue-600" size={20} />
@@ -105,8 +105,8 @@ export function DashboardView() {
     >
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tight">Main <span className="text-blue-600">Command</span> Dashboard</h1>
-          <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Verified Secure Data Stream</p>
+          <h1 className="text-4xl font-black text-gray-900 tracking-tight">System <span className="text-blue-600">Overview</span> Dashboard</h1>
+          <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Live System Data Stream</p>
         </div>
       </div>
 

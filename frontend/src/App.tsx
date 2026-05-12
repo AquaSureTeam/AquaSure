@@ -24,6 +24,7 @@ function App() {
   const [userRole, setUserRole] = useState<UserRole>("admin");
   const [activeView, setActiveView] = useState("dashboard");
   const [notificationCount, setNotificationCount] = useState(3);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
 const handleLogin = (userName: string, email: string, password: string, role: UserRole) => {
   if (userName && email && password) {
@@ -156,15 +157,19 @@ const handleLogin = (userName: string, email: string, password: string, role: Us
         onLogout={handleLogout}
         userName={userName}
         userRole={userRole}
+        isCollapsed={isSidebarCollapsed}
+        onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
       />
 
       <div className="flex-1 flex flex-col overflow-hidden relative z-10">
-        <Header 
-          onNotificationClick={handleNotificationClick}
-          notificationCount={notificationCount}
-          userName={userName}
-          userRole={userRole}
-        />
+        {activeView !== "dashboard" && (
+          <Header 
+            onNotificationClick={handleNotificationClick}
+            notificationCount={notificationCount}
+            userName={userName}
+            userRole={userRole}
+          />
+        )}
 
         <main className="flex-1 overflow-y-auto px-8 py-6">
           <div className="max-w-7xl mx-auto">

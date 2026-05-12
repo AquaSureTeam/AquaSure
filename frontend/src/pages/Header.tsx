@@ -93,7 +93,7 @@ export function Header({ onNotificationClick, notificationCount, userName = "Adm
             </div>
             <div className="hidden lg:block text-left">
               <p className="text-xs font-black text-gray-900 leading-tight">{userName}</p>
-              <p className="text-[9px] font-black text-gray-400 uppercase tracking-tighter">Verified User</p>
+              <p className="text-[9px] font-black text-gray-400 uppercase tracking-tighter">Verified Member</p>
             </div>
             <ChevronDown size={14} className="text-gray-400 ml-1 group-hover:translate-y-0.5 transition-transform" />
           </button>
