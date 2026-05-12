@@ -1,4 +1,4 @@
-import { Droplets, Mail, Lock, Eye, EyeOff, ShieldCheck, User as UserIcon, ArrowRight } from "lucide-react";
+import { Droplets, Mail, Lock, Eye, EyeOff, ShieldCheck, User as UserIcon, ArrowRight, Waves, Shield } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -25,165 +25,201 @@ export function LoginView({ onLogin, onSwitchToSignup }: LoginViewProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Dynamic Background Elements */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-[1000px] grid lg:grid-cols-5 bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-blue-100"
+        animate={{ 
+          scale: [1, 1.2, 1],
+          rotate: [0, 90, 0],
+          x: [0, 100, 0],
+          y: [0, 50, 0],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="fixed -top-48 -left-48 w-[40rem] h-[40rem] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none" 
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.3, 1],
+          rotate: [0, -45, 0],
+          x: [0, -100, 0],
+          y: [0, 80, 0],
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear", delay: 2 }}
+        className="fixed -bottom-48 -right-48 w-[50rem] h-[50rem] bg-blue-400/10 rounded-full blur-[150px] pointer-events-none" 
+      />
+
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        className="w-full max-w-[1100px] min-h-[700px] grid lg:grid-cols-2 bg-white/80 backdrop-blur-2xl rounded-[3.5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border border-white/40 relative z-10"
       >
-       
-        <div className="lg:col-span-2 relative flex flex-col justify-center p-12 overflow-hidden bg-gradient-to-br from-[#1E40AF] to-[#3B82F6]">
+        {/* Left Side - Brand Identity */}
+        <div className="relative flex flex-col justify-between p-16 overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-blue-800">
+          {/* Animated Glass Spheres */}
           <motion.div 
-            animate={{ y: [0, -20, 0], scale: [1, 1.05, 1] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -left-10 top-20 w-48 h-48 bg-white/10 rounded-full blur-xl" 
+            animate={{ y: [0, -40, 0], x: [0, 20, 0] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -left-20 top-20 w-64 h-64 bg-white/10 rounded-full blur-2xl" 
           />
           <motion.div 
-            animate={{ y: [0, 30, 0], scale: [1, 1.1, 1] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute -right-20 bottom-10 w-64 h-64 bg-blue-400/20 rounded-full shadow-[inset_0_0_50px_rgba(255,255,255,0.3)]" 
-          />
-          <motion.div 
-            animate={{ y: [0, -15, 0], scale: [1, 1.2, 1] }}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute left-20 bottom-20 w-32 h-32 bg-white/5 rounded-full backdrop-blur-sm border border-white/10 shadow-2xl" 
+            animate={{ y: [0, 50, 0], x: [0, -30, 0] }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute -right-24 bottom-24 w-80 h-80 bg-blue-400/20 rounded-full border border-white/10" 
           />
 
-          <div className="relative z-10 text-white">
-            <h1 className="text-4xl font-black tracking-tighter mb-2">WELCOME</h1>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-100/70">Environmental Monitor</p>
-            <div className="mt-8 space-y-4">
-              <p className="text-blue-100/60 text-xs leading-relaxed max-w-[200px]">
-                Access the world's most advanced water quality monitoring platform.
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-12">
+               <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl border border-white/20">
+                 <Waves size={32} className="text-white" />
+               </div>
+               <h1 className="text-3xl font-black text-white tracking-tighter">IsokoSense</h1>
+            </div>
+            
+            <div className="space-y-6">
+              <h2 className="text-6xl font-black text-white leading-none tracking-tighter">
+                CLEAN WATER <br />
+                <span className="text-blue-200">FOR ALL.</span>
+              </h2>
+              <p className="text-lg font-bold text-blue-100/70 max-w-sm leading-relaxed">
+                Access the world's most advanced water quality monitoring ecosystem. 
+                Real-time telemetry, historical analysis, and smart response tools.
               </p>
-              <div className="w-12 h-1 bg-white/20 rounded-full" />
+            </div>
+          </div>
+
+          <div className="relative z-10">
+            <div className="flex items-center gap-4 text-white/50">
+              <ShieldCheck size={20} />
+              <p className="text-[10px] font-black uppercase tracking-[0.3em]">AES-256 SECURED CHANNEL</p>
             </div>
           </div>
         </div>
 
-        {/* Right Side - Form */}
-        <div className="lg:col-span-3 p-8 lg:p-16 bg-white">
-          <div className="max-w-md mx-auto">
-            <div className="mb-10 text-center lg:text-left">
-              <h2 className="text-4xl font-black text-gray-900 mb-2">Sign in</h2>
-              <p className="text-xs text-gray-400">Enter your credentials to access the dashboard</p>
+        {/* Right Side - Intelligence Access */}
+        <div className="p-16 lg:p-24 flex flex-col justify-center">
+          <div className="max-w-md mx-auto w-full">
+            <div className="mb-12">
+              <h2 className="text-5xl font-black text-gray-900 tracking-tighter mb-3 uppercase">Sign In</h2>
+              <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Identify yourself to the core system</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="space-y-6">
                 <div className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
-                    <UserIcon className="text-gray-400 group-focus-within:text-brand" size={18} />
-                  </div>
+                  <UserIcon className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={20} />
                   <input
                     type="text"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                    placeholder="User Name"
-                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-4 pl-16 pr-4 outline-none focus:bg-white focus:border-brand/20 focus:ring-4 focus:ring-brand/5 transition-all placeholder:text-gray-400 font-medium text-sm"
+                    placeholder="Full Access Name"
+                    className="w-full bg-gray-50 border border-transparent rounded-3xl py-5 pl-16 pr-6 outline-none focus:bg-white focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 transition-all placeholder:text-gray-300 font-bold text-sm"
                     required
                   />
                 </div>
 
                 <div className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
-                    <Mail className="text-gray-400 group-focus-within:text-brand" size={18} />
-                  </div>
+                  <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={20} />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email Address"
-                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-4 pl-16 pr-4 outline-none focus:bg-white focus:border-brand/20 focus:ring-4 focus:ring-brand/5 transition-all placeholder:text-gray-400 font-medium text-sm"
+                    placeholder="Corporate Email"
+                    className="w-full bg-gray-50 border border-transparent rounded-3xl py-5 pl-16 pr-6 outline-none focus:bg-white focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 transition-all placeholder:text-gray-300 font-bold text-sm"
                     required
                   />
                 </div>
 
                 <div className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
-                    <Lock className="text-gray-400 group-focus-within:text-brand" size={18} />
-                  </div>
+                  <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={20} />
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-4 pl-16 pr-20 outline-none focus:bg-white focus:border-brand/20 focus:ring-4 focus:ring-brand/5 transition-all placeholder:text-gray-400 font-medium text-sm"
+                    placeholder="Security Credential"
+                    className="w-full bg-gray-50 border border-transparent rounded-3xl py-5 pl-16 pr-20 outline-none focus:bg-white focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 transition-all placeholder:text-gray-300 font-bold text-sm"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-brand tracking-widest hover:text-brand-dark transition-colors"
+                    className="absolute right-6 top-1/2 -translate-y-1/2 text-[10px] font-black text-blue-600 tracking-widest uppercase hover:text-blue-800"
                   >
-                    {showPassword ? "HIDE" : "SHOW"}
+                    {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
 
-                <div className="space-y-2">
-                  <div className="relative">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg">
-                      <ShieldCheck className="text-gray-400" size={18} />
-                    </div>
-                    <select
-                      value={selectedRole}
-                      onChange={(e) => setSelectedRole(e.target.value as UserRole)}
-                      className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-4 pl-16 pr-10 outline-none focus:bg-white focus:border-brand/20 transition-all appearance-none cursor-pointer text-sm font-medium text-gray-700"
-                      required
-                    >
-                      <option value="officer">Environmental Officer</option>
-                      <option value="operator">Industry Operator</option>
-                      <option value="technician">Technician</option>
-                      <option value="researcher">Researcher</option>
-                      <option value="admin">Administrator</option>
-                    </select>
-                  </div>
+                <div className="relative group">
+                  <Shield className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={20} />
+                  <select
+                    value={selectedRole}
+                    onChange={(e) => setSelectedRole(e.target.value as UserRole)}
+                    className="w-full bg-gray-50 border border-transparent rounded-3xl py-5 pl-16 pr-10 outline-none focus:bg-white focus:border-blue-600 transition-all appearance-none cursor-pointer text-sm font-bold text-gray-700"
+                    required
+                  >
+                    <option value="officer">Environmental Officer</option>
+                    <option value="operator">Industry Operator</option>
+                    <option value="technician">Systems Technician</option>
+                    <option value="researcher">Scientific Researcher</option>
+                    <option value="admin">System Administrator</option>
+                  </select>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between px-1">
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <div className={`w-5 h-5 rounded-md border transition-all flex items-center justify-center ${rememberMe ? 'bg-brand border-brand' : 'bg-white border-gray-200 group-hover:border-brand'}`}>
-                    {rememberMe && <svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>}
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className={`w-6 h-6 rounded-lg border-2 transition-all flex items-center justify-center ${rememberMe ? 'bg-blue-600 border-blue-600' : 'bg-white border-gray-200 group-hover:border-blue-600'}`}>
+                    {rememberMe && <CheckCircle size={14} className="text-white" />}
                   </div>
                   <input type="checkbox" className="hidden" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
-                  <span className="text-xs font-bold text-gray-500">Remember me</span>
+                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Keep Authenticated</span>
                 </label>
-                <button type="button" className="text-xs font-bold text-brand hover:underline">
-                  Forgot Password?
+                <button type="button" className="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:underline">
+                  Key Recovery?
                 </button>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-4 pt-4">
                 <button
                   type="submit"
-                  className="w-full bg-[#1E3A8A] hover:bg-[#1E40AF] text-white font-black py-4 rounded-xl shadow-lg transition-all active:scale-[0.98] text-sm tracking-wide"
+                  className="w-full bg-blue-600 text-white font-black py-6 rounded-3xl shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-[0.98] text-xs uppercase tracking-[0.3em]"
                 >
-                  Sign in
+                  Authorize Entry
                 </button>
-                <div className="flex items-center gap-4 py-2">
+                <div className="flex items-center gap-6 py-4">
                   <div className="flex-1 h-px bg-gray-100" />
-                  <span className="text-[10px] font-black text-gray-300 uppercase">Or</span>
+                  <span className="text-[10px] font-black text-gray-200 uppercase tracking-widest">Or</span>
                   <div className="flex-1 h-px bg-gray-100" />
                 </div>
                 <button
                   type="button"
-                  className="w-full bg-white border-2 border-gray-200 hover:border-brand/20 hover:bg-gray-50 text-gray-700 font-bold py-4 rounded-xl transition-all active:scale-[0.98] text-sm"
+                  onClick={onSwitchToSignup}
+                  className="w-full bg-white border-2 border-gray-100 hover:border-blue-600 hover:text-blue-600 text-gray-400 font-black py-6 rounded-3xl transition-all active:scale-[0.98] text-[10px] uppercase tracking-[0.3em]"
                 >
-                  Sign in with other
+                  Create New Identity
                 </button>
               </div>
-
-              <p className="text-center text-gray-400 text-[11px] font-bold">
-                Don't have an account?{" "}
-                <button type="button" onClick={onSwitchToSignup} className="text-brand hover:underline">
-                  Sign up
-                </button>
-              </p>
             </form>
           </div>
         </div>
       </motion.div>
     </div>
+  );
+}
+
+function CheckCircle({ size, className }: { size: number, className: string }) {
+  return (
+    <svg 
+      width={size} 
+      height={size} 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="4" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      className={className}
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
   );
 }

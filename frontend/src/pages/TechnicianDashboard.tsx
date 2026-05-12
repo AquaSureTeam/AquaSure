@@ -1,23 +1,37 @@
-import { Wrench, Activity, Power, RotateCcw, Settings, FileText, CheckCircle2, AlertTriangle, Battery, Calendar } from "lucide-react";
-import { useState } from "react";
+import { Wrench, Activity, Power, RotateCcw, Settings, FileText, CheckCircle2, AlertTriangle, Battery, Calendar, Shield, Cpu } from "lucide-react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function TechnicianDashboard() {
-  const [sensors, setSensors] = useState([
-    { id: 1, name: "pH Sensor", status: "operational", battery: 85, lastCalibration: "2 days ago", nextCalibration: "28 days" },
-    { id: 2, name: "Turbidity Sensor", status: "warning", battery: 45, lastCalibration: "15 days ago", nextCalibration: "15 days" },
-    { id: 3, name: "Temperature Sensor", status: "operational", battery: 92, lastCalibration: "5 days ago", nextCalibration: "25 days" },
-    { id: 4, name: "Conductivity Sensor", status: "operational", battery: 78, lastCalibration: "1 day ago", nextCalibration: "29 days" },
-  ]);
-
+  const [sensors, setSensors] = useState<any[]>([]);
+  const [maintenanceLogs, setMaintenanceLogs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [valveOverride, setValveOverride] = useState(false);
 
-  const maintenanceLogs = [
-    { id: 1, action: "Calibrated pH sensor", technician: "John Smith", time: "2 days ago", status: "completed" },
-    { id: 2, action: "Replaced turbidity sensor filter", technician: "Sarah Johnson", time: "1 week ago", status: "completed" },
-    { id: 3, action: "System diagnostics performed", technician: "Mike Chen", time: "2 weeks ago", status: "completed" },
-    { id: 4, action: "Valve maintenance scheduled", technician: "John Smith", time: "Pending", status: "scheduled" },
-  ];
+  useEffect(() => {
+    // Simulate technician telemetry fetch
+    const fetchTechnicianData = async () => {
+      setLoading(true);
+      setTimeout(() => {
+        setSensors([
+          { id: 1, name: "pH Sensor Node", status: "operational", battery: 85, lastCalibration: "2 days ago", nextCalibration: "28 days" },
+          { id: 2, name: "Turbidity Sensor Node", status: "warning", battery: 45, lastCalibration: "15 days ago", nextCalibration: "15 days" },
+          { id: 3, name: "Temperature Sensor Node", status: "operational", battery: 92, lastCalibration: "5 days ago", nextCalibration: "25 days" },
+          { id: 4, name: "Conductivity Sensor Node", status: "operational", battery: 78, lastCalibration: "1 day ago", nextCalibration: "29 days" },
+        ]);
+
+        setMaintenanceLogs([
+          { id: 1, action: "Calibrated pH sensor", technician: "John Smith", time: "2 days ago", status: "completed" },
+          { id: 2, action: "Replaced turbidity sensor filter", technician: "Sarah Johnson", time: "1 week ago", status: "completed" },
+          { id: 3, action: "System diagnostics performed", technician: "Mike Chen", time: "2 weeks ago", status: "completed" },
+          { id: 4, action: "Valve maintenance scheduled", technician: "John Smith", time: "Pending", status: "scheduled" },
+        ]);
+        setLoading(false);
+      }, 1600);
+    };
+
+    fetchTechnicianData();
+  }, []);
 
   const handleCalibrate = (sensorId: number) => {
     setSensors(sensors.map(sensor => 
@@ -33,174 +47,172 @@ export function TechnicianDashboard() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="h-[70vh] flex items-center justify-center">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="p-8 space-y-8 relative"
     >
-      {/* Decorative Blob */}
+      {/* Decorative Elements */}
       <div className="absolute top-0 right-0 -z-10 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px]" />
       
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tight">System <span className="text-blue-600">Technician</span></h1>
-          <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-[0.2em]">Industrial Maintenance Control</p>
+          <h1 className="text-4xl font-black text-gray-900 tracking-tight flex items-center gap-4">
+             <Wrench className="text-blue-600" size={36} />
+             Systems <span className="text-blue-600">Technician</span>
+          </h1>
+          <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-[0.2em]">Hardware & Maintenance Command</p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="glass px-6 py-3 rounded-2xl flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Main Controller</span>
-            <span className="text-sm font-black text-green-600 uppercase">Online</span>
+          <div className="glass px-8 py-4 rounded-[2rem] flex items-center gap-4 shadow-xl shadow-blue-50">
+            <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+            <div>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">Main Logic Unit</p>
+              <p className="text-sm font-black text-green-600 uppercase mt-1">Status: Stable</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* System Controls */}
+      {/* Control Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Manual Valve Override */}
-        <motion.div whileHover={{ y: -5 }} className="glass rounded-[2.5rem] p-8 flex flex-col items-center text-center">
-          <div className="mb-6 p-4 bg-blue-50 rounded-3xl">
-            <Power size={32} className="text-blue-600" />
+        {/* Override */}
+        <motion.div whileHover={{ y: -5 }} className="glass rounded-[3rem] p-10 flex flex-col items-center text-center relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-blue-600/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-all duration-700" />
+          <div className="mb-8 p-5 bg-blue-50 rounded-[2rem]">
+            <Power size={40} className="text-blue-600" />
           </div>
-          <h2 className="text-lg font-black text-gray-900 uppercase tracking-tight mb-6">Valve Override</h2>
+          <h2 className="text-xl font-black text-gray-900 mb-6 uppercase tracking-tight">Valve Override</h2>
           <motion.div
             animate={{ 
-              rotate: valveOverride ? [0, 10, -10, 0] : 0,
-              scale: valveOverride ? [1, 1.1, 1] : 1
+              boxShadow: valveOverride ? ["0 0 0px rgba(245, 158, 11, 0)", "0 0 30px rgba(245, 158, 11, 0.4)", "0 0 0px rgba(245, 158, 11, 0)"] : "none"
             }}
-            transition={{ duration: 0.5, repeat: valveOverride ? Infinity : 0 }}
-            className={`w-20 h-20 rounded-full flex items-center justify-center mb-4 ${
-              valveOverride ? "bg-amber-500 text-white shadow-lg shadow-amber-200" : "bg-gray-100 text-gray-400"
+            transition={{ duration: 2, repeat: Infinity }}
+            className={`w-24 h-24 rounded-[2.5rem] flex items-center justify-center mb-6 transition-all duration-500 ${
+              valveOverride ? "bg-amber-500 text-white shadow-2xl shadow-amber-200" : "bg-gray-100 text-gray-300"
             }`}
           >
-            <Power size={36} />
+            <Power size={48} />
           </motion.div>
-          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">
-            {valveOverride ? "Manual Mode Active" : "Automated System"}
-          </p>
           <button
             onClick={() => setValveOverride(!valveOverride)}
-            className={`w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${
-              valveOverride ? "bg-gray-900 text-white" : "bg-blue-600 text-white shadow-lg shadow-blue-200"
+            className={`w-full py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${
+              valveOverride ? "bg-gray-900 text-white" : "bg-blue-600 text-white shadow-xl shadow-blue-100"
             }`}
           >
-            {valveOverride ? "Release Control" : "Take Control"}
+            {valveOverride ? "Deactivate Override" : "Acquire Manual Control"}
           </button>
         </motion.div>
 
         {/* System Reset */}
-        <motion.div whileHover={{ y: -5 }} className="glass rounded-[2.5rem] p-8 flex flex-col items-center text-center">
-          <div className="mb-6 p-4 bg-red-50 rounded-3xl">
-            <RotateCcw size={32} className="text-red-500" />
+        <motion.div whileHover={{ y: -5 }} className="glass rounded-[3rem] p-10 flex flex-col items-center text-center relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-red-600/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-all duration-700" />
+          <div className="mb-8 p-5 bg-red-50 rounded-[2rem]">
+            <RotateCcw size={40} className="text-red-500" />
           </div>
-          <h2 className="text-lg font-black text-gray-900 uppercase tracking-tight mb-6">Global Reset</h2>
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-red-500 text-white shadow-lg shadow-red-200">
-            <RotateCcw size={36} />
+          <h2 className="text-xl font-black text-gray-900 mb-6 uppercase tracking-tight">Logic Reset</h2>
+          <div className="w-24 h-24 rounded-[2.5rem] flex items-center justify-center mb-6 bg-red-500 text-white shadow-2xl shadow-red-200">
+            <Cpu size={48} />
           </div>
-          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">Full Controller Restart</p>
           <button
             onClick={handleSystemReset}
-            className="w-full py-4 bg-red-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-200 hover:bg-red-600 transition-all"
+            className="w-full py-5 bg-red-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-red-100 hover:bg-red-600 transition-all"
           >
-            Initiate Reset
+            Reboot Infrastructure
           </button>
         </motion.div>
 
-        {/* Device Summary */}
-        <motion.div whileHover={{ y: -5 }} className="glass rounded-[2.5rem] p-8">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
-              <Activity size={24} />
+        {/* Health Summary */}
+        <motion.div whileHover={{ y: -5 }} className="glass rounded-[3rem] p-10 flex flex-col justify-between">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="p-4 bg-blue-50 rounded-[1.5rem] text-blue-600">
+              <Shield size={32} />
             </div>
-            <h2 className="text-lg font-black text-gray-900 uppercase tracking-tight">Summary</h2>
+            <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Defense Index</h2>
           </div>
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Active Nodes</span>
-              <span className="text-xl font-black text-blue-600">04/04</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Errors</span>
-              <span className="text-xl font-black text-amber-500">01</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Health</span>
-              <span className="text-xl font-black text-green-500">92%</span>
-            </div>
+          <div className="space-y-8">
+            {[
+              { label: "Hardware Nodes", value: "04/04", color: "text-blue-600" },
+              { label: "Active Faults", value: "01", color: "text-amber-500" },
+              { label: "Global Efficiency", value: "92%", color: "text-green-500" }
+            ].map((stat, i) => (
+              <div key={i} className="flex items-center justify-between group cursor-default">
+                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">{stat.label}</span>
+                <span className={`text-2xl font-black ${stat.color}`}>{stat.value}</span>
+              </div>
+            ))}
           </div>
         </motion.div>
       </div>
 
-      {/* Sensor Health Status Cards */}
-      <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-2xl shadow-xl p-6">
-        <div className="flex items-center gap-2 mb-6">
-          <Wrench size={20} className="text-[#1F7A8C]" />
-          <h2 className="text-lg font-semibold text-[#0A2A2F]">Sensor Health & Calibration</h2>
+      {/* Sensor Management */}
+      <div className="glass rounded-[3rem] p-12">
+        <div className="flex items-center gap-4 mb-12">
+          <div className="p-4 bg-blue-50 rounded-[1.5rem] text-blue-600">
+            <Settings size={32} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tight">Hardware Provisioning</h2>
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-1">Individual node calibration & power metrics</p>
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {sensors.map((sensor) => (
-            <div
-              key={sensor.id}
-              className="backdrop-blur-sm bg-white/60 border border-white/40 rounded-xl p-5 hover:shadow-lg transition-all"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <h3 className="font-semibold text-[#0A2A2F] mb-1">{sensor.name}</h3>
-                  <div className="flex items-center gap-2">
-                    {sensor.status === "operational" ? (
-                      <CheckCircle2 size={16} className="text-[#2ECC71]" />
-                    ) : (
-                      <AlertTriangle size={16} className="text-[#F39C12]" />
-                    )}
-                    <span
-                      className={`text-xs font-medium ${
-                        sensor.status === "operational" ? "text-[#2ECC71]" : "text-[#F39C12]"
-                      }`}
-                    >
-                      {sensor.status.toUpperCase()}
-                    </span>
+            <div key={sensor.id} className="glass bg-white/40 border-blue-50 p-8 rounded-[2.5rem] group hover:border-blue-200 transition-all">
+              <div className="flex items-start justify-between mb-8">
+                <div>
+                  <h3 className="text-lg font-black text-gray-900 group-hover:text-blue-600 transition-colors">{sensor.name}</h3>
+                  <div className={`mt-2 px-3 py-1 inline-flex items-center gap-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${
+                    sensor.status === 'operational' ? 'bg-green-50 text-green-600' : 'bg-amber-50 text-amber-600'
+                  }`}>
+                    <div className={`w-1.5 h-1.5 rounded-full ${sensor.status === 'operational' ? 'bg-green-500' : 'bg-amber-500 animate-pulse'}`} />
+                    {sensor.status}
                   </div>
                 </div>
                 <button
                   onClick={() => handleCalibrate(sensor.id)}
-                  className="px-4 py-2 bg-blue-600 text-white text-xs font-black uppercase tracking-wider rounded-xl shadow hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+                  className="px-6 py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg shadow-blue-100 hover:bg-blue-700 transition-all active:scale-95"
                 >
-                  Calibrate
+                  Calibrate Node
                 </button>
               </div>
 
-              <div className="space-y-3">
-                {/* Battery Status */}
+              <div className="space-y-6">
                 <div>
-                  <div className="flex justify-between text-xs text-gray-600 mb-1">
-                    <span>Battery Level</span>
-                    <span className="font-semibold">{sensor.battery}%</span>
+                  <div className="flex justify-between text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">
+                    <span className="flex items-center gap-2"><Battery size={14} className="text-blue-600" /> Energy Reserves</span>
+                    <span className="text-gray-900">{sensor.battery}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className={`h-2 rounded-full transition-all ${
-                        sensor.battery > 70
-                          ? "bg-[#2ECC71]"
-                          : sensor.battery > 40
-                          ? "bg-[#F39C12]"
-                          : "bg-[#E74C3C]"
+                  <div className="w-full bg-gray-100 rounded-full h-2.5 p-0.5">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${sensor.battery}%` }}
+                      className={`h-full rounded-full ${
+                        sensor.battery > 70 ? "bg-blue-600" : sensor.battery > 40 ? "bg-amber-500" : "bg-red-500"
                       }`}
-                      style={{ width: `${sensor.battery}%` }}
                     />
                   </div>
                 </div>
 
-                {/* Calibration Info */}
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  <div className="bg-white/50 rounded-lg p-2">
-                    <p className="text-xs text-gray-500">Last Calibration</p>
-                    <p className="text-sm font-semibold text-[#0A2A2F] mt-1">{sensor.lastCalibration}</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 bg-blue-50/50 rounded-2xl border border-blue-100/50">
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Last Sync</p>
+                    <p className="text-sm font-black text-blue-900 mt-1">{sensor.lastCalibration}</p>
                   </div>
-                  <div className="bg-white/50 rounded-lg p-2">
-                    <p className="text-xs text-gray-500">Next Due</p>
-                    <p className="text-sm font-semibold text-[#0A2A2F] mt-1">{sensor.nextCalibration}</p>
+                  <div className="p-4 bg-gray-50/50 rounded-2xl border border-gray-100">
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Next Cycle</p>
+                    <p className="text-sm font-black text-gray-600 mt-1">{sensor.nextCalibration}</p>
                   </div>
                 </div>
               </div>
@@ -209,35 +221,33 @@ export function TechnicianDashboard() {
         </div>
       </div>
 
-      {/* Maintenance Logs */}
-      <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-2xl shadow-xl p-6">
-        <div className="flex items-center gap-2 mb-6">
-          <FileText size={20} className="text-[#1F7A8C]" />
-          <h2 className="text-lg font-semibold text-[#0A2A2F]">Maintenance Logs</h2>
+      {/* Technical Logs */}
+      <div className="glass rounded-[3rem] p-12">
+        <div className="flex items-center gap-4 mb-10">
+          <div className="p-4 bg-blue-50 rounded-[1.5rem] text-blue-600">
+            <FileText size={32} />
+          </div>
+          <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tight">Engineering Logs</h2>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {maintenanceLogs.map((log) => (
-            <div
-              key={log.id}
-              className="backdrop-blur-sm bg-white/60 border border-white/30 rounded-xl p-4 hover:shadow-md transition-all"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <p className="font-semibold text-[#0A2A2F] mb-1">{log.action}</p>
-                  <p className="text-sm text-gray-600">Technician: {log.technician}</p>
+            <div key={log.id} className="p-6 bg-white/40 rounded-[2rem] border border-blue-50 hover:border-blue-100 transition-all flex flex-col md:flex-row md:items-center justify-between gap-6 group">
+              <div className="flex items-center gap-6">
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${log.status === 'completed' ? 'bg-green-50 text-green-500' : 'bg-blue-50 text-blue-600'}`}>
+                   {log.status === 'completed' ? <CheckCircle2 size={28} /> : <Calendar size={28} />}
                 </div>
-                <div className="text-right">
-                  <div
-                    className={`inline-block px-3 py-1 rounded-lg text-xs font-medium mb-2 ${
-                      log.status === "completed"
-                        ? "bg-green-100 text-[#2ECC71]"
-                        : "bg-blue-100 text-[#1F7A8C]"
-                    }`}
-                  >
-                    {log.status.toUpperCase()}
-                  </div>
-                  <p className="text-xs text-gray-500">{log.time}</p>
+                <div>
+                  <p className="text-lg font-black text-gray-900 group-hover:text-blue-600 transition-colors">{log.action}</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Assigned: {log.technician}</p>
                 </div>
+              </div>
+              <div className="flex items-center gap-6">
+                <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${
+                  log.status === 'completed' ? 'bg-green-50 text-green-600' : 'bg-blue-50 text-blue-600'
+                }`}>
+                  {log.status}
+                </span>
+                <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">{log.time}</span>
               </div>
             </div>
           ))}

@@ -57,7 +57,7 @@ export function Sidebar({ activeView, onViewChange, onLogout, userName = "Admin"
             <Droplets size={28} className="text-white" />
           </motion.div>
           <div>
-            <h1 className="font-black text-3xl tracking-tighter text-gray-900 leading-none">AquaSure</h1>
+            <h1 className="font-black text-3xl tracking-tighter text-gray-900 leading-none">IsokoSense</h1>
             <div className="flex items-center gap-2 mt-1.5">
               <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse shadow-lg shadow-blue-400" />
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">Secure Core</p>

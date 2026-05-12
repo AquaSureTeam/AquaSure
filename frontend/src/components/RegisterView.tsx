@@ -1,4 +1,4 @@
-import { Droplets, Mail, Lock, User as UserIcon, Building, Eye, EyeOff, ShieldCheck, ArrowRight } from "lucide-react";
+import { Droplets, Mail, Lock, User as UserIcon, Building, Eye, EyeOff, ShieldCheck, ArrowRight, Waves, Shield } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { UserRole } from "./LoginView";
@@ -44,169 +44,174 @@ export function RegisterView({ onSignup, onSwitchToLogin }: SignupViewProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Background Elements */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-[1000px] grid lg:grid-cols-5 bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-blue-100"
-      >
-        {/* Left Side - Welcome & Spheres */}
-        <div className="lg:col-span-2 relative flex flex-col justify-center p-12 overflow-hidden bg-gradient-to-br from-[#1E40AF] to-[#3B82F6]">
-          {/* Animated 3D Spheres */}
-          <motion.div 
-            animate={{ y: [0, -30, 0], scale: [1, 1.1, 1] }}
-            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -right-10 top-10 w-56 h-56 bg-white/10 rounded-full blur-xl" 
-          />
-          <motion.div 
-            animate={{ y: [0, 20, 0], scale: [1, 1.05, 1] }}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute -left-20 bottom-20 w-48 h-48 bg-blue-300/20 rounded-full shadow-[inset_0_0_40px_rgba(255,255,255,0.2)]" 
-          />
+        animate={{ scale: [1, 1.2, 1], x: [0, 50, 0] }}
+        transition={{ duration: 15, repeat: Infinity }}
+        className="fixed -top-24 -right-24 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] pointer-events-none" 
+      />
+      <motion.div 
+        animate={{ scale: [1, 1.3, 1], x: [0, -50, 0] }}
+        transition={{ duration: 18, repeat: Infinity }}
+        className="fixed -bottom-24 -left-24 w-[30rem] h-[30rem] bg-blue-400/10 rounded-full blur-[120px] pointer-events-none" 
+      />
 
-          <div className="relative z-10 text-white">
-            <h1 className="text-4xl font-black tracking-tighter mb-2">JOIN US</h1>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-100/70">Create Account</p>
-            <div className="mt-8 space-y-4">
-              <p className="text-blue-100/60 text-xs leading-relaxed max-w-[200px]">
-                Start your journey into high-precision environmental data.
-              </p>
-              <div className="w-12 h-1 bg-white/20 rounded-full" />
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        className="w-full max-w-[1100px] min-h-[750px] grid lg:grid-cols-2 bg-white/80 backdrop-blur-2xl rounded-[3.5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border border-white/40 relative z-10"
+      >
+        {/* Left Side - Brand Story */}
+        <div className="relative flex flex-col justify-between p-16 overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-blue-800">
+          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+          
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-12">
+               <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl border border-white/20">
+                 <Waves size={32} className="text-white" />
+               </div>
+               <h1 className="text-3xl font-black text-white tracking-tighter">IsokoSense</h1>
             </div>
+            
+            <div className="space-y-6">
+              <h2 className="text-6xl font-black text-white leading-none tracking-tighter">
+                FUTURE <br />
+                <span className="text-blue-200">READY.</span>
+              </h2>
+              <p className="text-lg font-bold text-blue-100/70 max-w-sm leading-relaxed">
+                Join the global network of environmental guardians. 
+                Securing water sustainability through data-driven intelligence.
+              </p>
+            </div>
+          </div>
+
+          <div className="relative z-10">
+            <div className="flex -space-x-4">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="w-12 h-12 rounded-full border-4 border-blue-600 bg-gray-200 flex items-center justify-center text-[10px] font-black text-blue-600 shadow-xl overflow-hidden">
+                   <img src={`https://i.pravatar.cc/100?u=${i}`} alt="user" />
+                </div>
+              ))}
+              <div className="w-12 h-12 rounded-full border-4 border-blue-600 bg-blue-500 flex items-center justify-center text-[10px] font-black text-white shadow-xl">
+                 +2K
+              </div>
+            </div>
+            <p className="text-[10px] font-black text-blue-200 uppercase tracking-widest mt-4">Trusted by researchers worldwide</p>
           </div>
         </div>
 
-        {/* Right Side - Form */}
-        <div className="lg:col-span-3 p-8 lg:p-12 bg-white overflow-y-auto max-h-[90vh] custom-scrollbar">
-          <div className="max-w-md mx-auto">
-            <div className="mb-8 text-center lg:text-left">
-              <h2 className="text-4xl font-black text-gray-900 mb-2">Sign up</h2>
-              <p className="text-xs text-gray-400">Fill in your details to create an account</p>
+        {/* Right Side - Registration Form */}
+        <div className="p-16 flex flex-col justify-center bg-white/50 backdrop-blur-xl overflow-y-auto max-h-[85vh] custom-scrollbar">
+          <div className="max-w-md mx-auto w-full">
+            <div className="mb-10 text-center">
+              <h2 className="text-4xl font-black text-gray-900 tracking-tighter mb-2 uppercase">Create Account</h2>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">Deploy your monitoring profile</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
-                    <UserIcon className="text-gray-400 group-focus-within:text-brand" size={16} />
-                  </div>
+                  <UserIcon className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={18} />
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Full Name"
-                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-4 outline-none focus:bg-white focus:border-brand/20 transition-all placeholder:text-gray-400 text-sm font-medium"
+                    className="w-full bg-gray-50 border border-transparent rounded-2xl py-4 pl-14 pr-4 outline-none focus:bg-white focus:border-blue-600 transition-all placeholder:text-gray-300 text-sm font-bold"
                     required
                   />
                 </div>
                 <div className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
-                    <Mail className="text-gray-400 group-focus-within:text-brand" size={16} />
-                  </div>
+                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={18} />
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="Email"
-                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-4 outline-none focus:bg-white focus:border-brand/20 transition-all placeholder:text-gray-400 text-sm font-medium"
+                    className="w-full bg-gray-50 border border-transparent rounded-2xl py-4 pl-14 pr-4 outline-none focus:bg-white focus:border-blue-600 transition-all placeholder:text-gray-300 text-sm font-bold"
                     required
                   />
                 </div>
               </div>
 
               <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
-                  <Building className="text-gray-400 group-focus-within:text-brand" size={16} />
-                </div>
+                <Building className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={18} />
                 <input
                   type="text"
                   value={formData.organization}
                   onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                  placeholder="Organization"
-                  className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-4 outline-none focus:bg-white focus:border-brand/20 transition-all placeholder:text-gray-400 text-sm font-medium"
+                  placeholder="Organization / Entity"
+                  className="w-full bg-gray-50 border border-transparent rounded-2xl py-4 pl-14 pr-4 outline-none focus:bg-white focus:border-blue-600 transition-all placeholder:text-gray-300 text-sm font-bold"
                   required
                 />
               </div>
 
               <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
-                  <ShieldCheck className="text-gray-400 group-focus-within:text-brand" size={16} />
-                </div>
+                <ShieldCheck className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={18} />
                 <select
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value as UserRole })}
-                  className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-4 outline-none focus:bg-white focus:border-brand/20 transition-all appearance-none cursor-pointer text-sm font-medium text-gray-700"
+                  className="w-full bg-gray-50 border border-transparent rounded-2xl py-4 pl-14 pr-4 outline-none focus:bg-white focus:border-blue-600 transition-all appearance-none cursor-pointer text-sm font-bold text-gray-700"
                   required
                 >
                   <option value="officer">Environmental Officer</option>
                   <option value="operator">Industry Operator</option>
-                  <option value="technician">Technician</option>
-                  <option value="researcher">Researcher</option>
-                  <option value="admin">Administrator</option>
+                  <option value="technician">Systems Technician</option>
+                  <option value="researcher">Scientific Researcher</option>
+                  <option value="admin">System Administrator</option>
                 </select>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
-                    <Lock className="text-gray-400 group-focus-within:text-brand" size={16} />
-                  </div>
                   <input
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     placeholder="Password"
-                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-10 outline-none focus:bg-white focus:border-brand/20 transition-all placeholder:text-gray-400 text-sm font-medium"
+                    className="w-full bg-gray-50 border border-transparent rounded-2xl py-4 px-6 outline-none focus:bg-white focus:border-blue-600 transition-all placeholder:text-gray-300 text-sm font-bold"
                     required
                   />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand transition-colors">
-                    {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
-                  </button>
                 </div>
                 <div className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-gray-100 rounded-lg group-focus-within:bg-brand-light transition-colors">
-                    <Lock className="text-gray-400 group-focus-within:text-brand" size={16} />
-                  </div>
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                     placeholder="Confirm"
-                    className="w-full bg-gray-50/50 border border-transparent rounded-2xl py-3.5 pl-14 pr-10 outline-none focus:bg-white focus:border-brand/20 transition-all placeholder:text-gray-400 text-sm font-medium"
+                    className="w-full bg-gray-50 border border-transparent rounded-2xl py-4 px-6 outline-none focus:bg-white focus:border-blue-600 transition-all placeholder:text-gray-300 text-sm font-bold"
                     required
                   />
-                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand transition-colors">
-                    {showConfirmPassword ? <EyeOff size={14} /> : <Eye size={14} />}
-                  </button>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-1">
+              <div className="flex items-start gap-4 p-2 bg-blue-50/50 rounded-2xl border border-blue-100">
                 <input
                   type="checkbox"
                   id="terms"
                   checked={agreedToTerms}
                   onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="mt-1 w-4 h-4 rounded border-gray-300 text-brand focus:ring-brand accent-brand"
+                  className="mt-1 w-5 h-5 rounded-lg border-2 border-blue-200 text-blue-600 accent-blue-600 cursor-pointer"
                 />
-                <label htmlFor="terms" className="text-[10px] text-gray-500 font-bold leading-relaxed uppercase tracking-wider">
-                  I agree to the <button type="button" className="text-brand font-black">Terms</button> and <button type="button" className="text-brand font-black">Privacy Policy</button>.
+                <label htmlFor="terms" className="text-[10px] text-gray-500 font-black leading-relaxed uppercase tracking-widest cursor-pointer">
+                  I accept the <button type="button" className="text-blue-600">Protocol Terms</button> and <button type="button" className="text-blue-600">Privacy Guidelines</button>.
                 </label>
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#1E3A8A] hover:bg-[#1E40AF] text-white font-black py-4 rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 mt-2 text-sm"
+                className="w-full bg-gray-900 text-white font-black py-6 rounded-3xl shadow-xl hover:bg-black hover:-translate-y-1 transition-all active:scale-[0.98] flex items-center justify-center gap-3 text-xs uppercase tracking-[0.3em]"
               >
-                Create Account <ArrowRight size={18} />
+                Register Identity <ArrowRight size={18} />
               </button>
 
-              <p className="text-center text-gray-400 text-[11px] font-bold">
-                Already have an account?{" "}
+              <p className="text-center text-gray-400 text-[10px] font-black uppercase tracking-widest">
+                Existing Identity?{" "}
                 <button
                   type="button"
                   onClick={onSwitchToLogin}
-                  className="text-brand hover:underline"
+                  className="text-blue-600 hover:underline"
                 >
                   Sign In
                 </button>
@@ -218,4 +223,3 @@ export function RegisterView({ onSignup, onSwitchToLogin }: SignupViewProps) {
     </div>
   );
 }
-

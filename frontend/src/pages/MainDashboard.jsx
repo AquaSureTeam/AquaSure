@@ -87,7 +87,7 @@ export function DashboardView() {
             </div>
             <h3 className="text-3xl font-black text-gray-900 mb-4 tracking-tight uppercase">Database Ready</h3>
             <p className="text-sm font-bold text-gray-500 max-w-md mx-auto leading-relaxed">
-              The AquaSure frontend is correctly configured and awaiting the initial data packet from the REST API. 
+              The IsokoSense frontend is correctly configured and awaiting the initial data packet from the REST API. 
               Real-time analytics and telemetry charts will render automatically upon connection.
             </p>
           </div>
