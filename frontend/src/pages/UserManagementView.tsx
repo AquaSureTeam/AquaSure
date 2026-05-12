@@ -1,6 +1,7 @@
-import { UserPlus, Phone, Mail, Building, MapPin, Key, Send, Shield } from "lucide-react";
-import { useState } from "react";
+import { UserPlus, Phone, Mail, Building, MapPin, Key, Send, Shield, Search, Trash2, Edit2, ShieldCheck, Users } from "lucide-react";
+import { useState, useEffect } from "react";
 import { UserRole } from "../components/LoginView"
+import { motion, AnimatePresence } from "framer-motion";
 
 export function UserManagementView() {
   const [formData, setFormData] = useState({
@@ -14,24 +15,35 @@ export function UserManagementView() {
     sendSMS: false,
   });
 
-  const [users, setUsers] = useState([
-    { id: 1, name: "John Doe", email: "john@industry.rw", role: "operator", station: "Station B", status: "active" },
-    { id: 2, name: "Sarah Johnson", email: "sarah@nema.gov.rw", role: "officer", station: "All Stations", status: "active" },
-    { id: 3, name: "Mike Chen", email: "mike@tech.rw", role: "technician", station: "Station C", status: "active" },
-  ]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate API fetch for users
+    const fetchUsers = async () => {
+      setLoading(true);
+      // In production: const response = await fetch('/api/users');
+      setTimeout(() => {
+        setUsers([
+          { id: 1, name: "John Doe", email: "john@industry.rw", role: "operator", station: "Station B", status: "active" },
+          { id: 2, name: "Sarah Johnson", email: "sarah@nema.gov.rw", role: "officer", station: "All Stations", status: "active" },
+          { id: 3, name: "Mike Chen", email: "mike@tech.rw", role: "technician", station: "Station C", status: "active" },
+        ]);
+        setLoading(false);
+      }, 1000);
+    };
+    fetchUsers();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
     if (!formData.fullName || !formData.email || !formData.phone || !formData.organization || !formData.monitoringStation || !formData.temporaryPassword) {
-      alert("Please fill in all required fields");
       return;
     }
 
-    // Create user
     const newUser = {
-      id: users.length + 1,
+      id: Date.now(),
       name: formData.fullName,
       email: formData.email,
       role: formData.role,
@@ -39,14 +51,7 @@ export function UserManagementView() {
       status: "active",
     };
 
-    setUsers([...users, newUser]);
-
-    // Show success message
-    if (formData.sendSMS) {
-      alert(`User created successfully!\nCredentials sent via SMS to ${formData.phone}`);
-    } else {
-      alert(`User created successfully!\nTemporary Password: ${formData.temporaryPassword}\nPlease share this password securely with the user.`);
-    }
+    setUsers([newUser, ...users]);
 
     // Reset form
     setFormData({
@@ -71,238 +76,244 @@ export function UserManagementView() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="p-8 space-y-10 relative"
+    >
+      {/* Decorative Background */}
+      <div className="absolute top-0 right-0 -z-10 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[120px]" />
+
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#0A2A2F]">User Management</h1>
-          <p className="text-sm text-gray-600 mt-1">Create and manage system users</p>
+          <h1 className="text-4xl font-black text-gray-900 tracking-tight">User <span className="text-blue-600">Access</span> Management</h1>
+          <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Administrative Control & Identity Services</p>
         </div>
-        <div className="backdrop-blur-xl bg-red-50/70 border border-red-200/40 rounded-xl px-4 py-2 shadow-lg">
-          <div className="flex items-center gap-2">
-            <Shield size={16} className="text-red-600" />
-            <span className="text-sm font-medium text-red-700">Admin Only</span>
-          </div>
+        <div className="flex items-center gap-4 bg-blue-600 text-white px-8 py-4 rounded-[2rem] shadow-xl shadow-blue-200">
+          <ShieldCheck size={20} />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em]">Restricted Administrator Access</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Create User Form */}
-        <div className="lg:col-span-2">
-          <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-2xl shadow-xl p-6">
-            <div className="flex items-center gap-2 mb-6">
-              <UserPlus size={20} className="text-[#1F7A8C]" />
-              <h2 className="text-lg font-semibold text-[#0A2A2F]">Create New User</h2>
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
+        {/* User Registration Panel */}
+        <div className="xl:col-span-2 space-y-8">
+          <div className="glass rounded-[3rem] p-10 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+            
+            <div className="flex items-center gap-4 mb-10">
+              <div className="p-4 bg-blue-50 rounded-2xl text-blue-600">
+                <UserPlus size={24} />
+              </div>
+              <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Deploy New Agent</h2>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Personal Information */}
-              <div className="backdrop-blur-sm bg-[#BFE9F0]/30 border border-[#1F7A8C]/20 rounded-xl p-4">
-                <h3 className="text-sm font-semibold text-[#0A2A2F] mb-4">Personal Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Full Name <span className="text-red-500">*</span>
-                    </label>
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Full Name */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Legal Full Name</label>
+                  <div className="relative group">
+                    <Users className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={18} />
                     <input
                       type="text"
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      placeholder="John Doe"
-                      className="w-full px-4 py-2.5 bg-white/60 border border-white/40 rounded-xl text-[#0A2A2F] placeholder-gray-400 focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/30 transition-all"
-                      required
+                      placeholder="e.g. Johnathan Smith"
+                      className="w-full pl-16 pr-8 py-5 bg-white/60 border border-gray-100 rounded-[2rem] text-gray-900 font-bold focus:outline-none focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 transition-all"
                     />
                   </div>
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                      <Mail size={16} />
-                      Email Address <span className="text-red-500">*</span>
-                    </label>
+                {/* Email */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Corporate Email</label>
+                  <div className="relative group">
+                    <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={18} />
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="john.doe@organization.rw"
-                      className="w-full px-4 py-2.5 bg-white/60 border border-white/40 rounded-xl text-[#0A2A2F] placeholder-gray-400 focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/30 transition-all"
-                      required
+                      placeholder="jsmith@aqua-sure.rw"
+                      className="w-full pl-16 pr-8 py-5 bg-white/60 border border-gray-100 rounded-[2rem] text-gray-900 font-bold focus:outline-none focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 transition-all"
                     />
                   </div>
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                      <Phone size={16} />
-                      Phone Number <span className="text-red-500">*</span>
-                    </label>
+                {/* Phone */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Emergency Contact</label>
+                  <div className="relative group">
+                    <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={18} />
                     <input
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+250 XXX XXX XXX"
-                      className="w-full px-4 py-2.5 bg-white/60 border border-white/40 rounded-xl text-[#0A2A2F] placeholder-gray-400 focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/30 transition-all"
-                      required
+                      placeholder="+250 788 000 000"
+                      className="w-full pl-16 pr-8 py-5 bg-white/60 border border-gray-100 rounded-[2rem] text-gray-900 font-bold focus:outline-none focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 transition-all"
                     />
                   </div>
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                      <Building size={16} />
-                      Organization <span className="text-red-500">*</span>
-                    </label>
+                {/* Organization */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Assigned Organization</label>
+                  <div className="relative group">
+                    <Building className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={18} />
                     <input
                       type="text"
                       value={formData.organization}
                       onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                      placeholder="Water Treatment Plant"
-                      className="w-full px-4 py-2.5 bg-white/60 border border-white/40 rounded-xl text-[#0A2A2F] placeholder-gray-400 focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/30 transition-all"
-                      required
+                      placeholder="e.g. NEMA Central"
+                      className="w-full pl-16 pr-8 py-5 bg-white/60 border border-gray-100 rounded-[2rem] text-gray-900 font-bold focus:outline-none focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 transition-all"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Role & Assignment */}
-              <div className="backdrop-blur-sm bg-[#BFE9F0]/30 border border-[#1F7A8C]/20 rounded-xl p-4">
-                <h3 className="text-sm font-semibold text-[#0A2A2F] mb-4">Role & Assignment</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Role <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      value={formData.role}
-                      onChange={(e) => setFormData({ ...formData, role: e.target.value as Exclude<UserRole, "admin"> })}
-                      className="w-full px-4 py-2.5 bg-white/60 border border-white/40 rounded-xl text-[#0A2A2F] focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/30 transition-all"
-                      required
-                    >
-                      <option value="officer">Environmental Officer</option>
-                      <option value="operator">Industry Operator</option>
-                      <option value="technician">Technician</option>
-                      <option value="researcher">Researcher</option>
-                    </select>
-                  </div>
+              {/* Advanced Configuration */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Strategic Role</label>
+                  <select
+                    value={formData.role}
+                    onChange={(e) => setFormData({ ...formData, role: e.target.value as any })}
+                    className="w-full px-8 py-5 bg-white/60 border border-gray-100 rounded-[2rem] text-gray-900 font-bold focus:outline-none focus:border-blue-600 transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="officer">Environmental Officer</option>
+                    <option value="operator">Industry Operator</option>
+                    <option value="technician">Systems Technician</option>
+                    <option value="researcher">Data Researcher</option>
+                  </select>
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                      <MapPin size={16} />
-                      Monitoring Station <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      value={formData.monitoringStation}
-                      onChange={(e) => setFormData({ ...formData, monitoringStation: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-white/60 border border-white/40 rounded-xl text-[#0A2A2F] focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/30 transition-all"
-                      required
-                    >
-                      <option value="">Select Station</option>
-                      <option value="All Stations">All Stations (Officers Only)</option>
-                      <option value="Station A">Station A - Industrial Zone</option>
-                      <option value="Station B">Station B - Residential Area</option>
-                      <option value="Station C">Station C - Agricultural Zone</option>
-                      <option value="Station D">Station D - River Outlet</option>
-                    </select>
-                  </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Node Assignment</label>
+                  <select
+                    value={formData.monitoringStation}
+                    onChange={(e) => setFormData({ ...formData, monitoringStation: e.target.value })}
+                    className="w-full px-8 py-5 bg-white/60 border border-gray-100 rounded-[2rem] text-gray-900 font-bold focus:outline-none focus:border-blue-600 transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="">Select Telemetry Node</option>
+                    <option value="All Stations">Global Access</option>
+                    <option value="Station A">Station A - Industrial</option>
+                    <option value="Station B">Station B - Residential</option>
+                  </select>
                 </div>
               </div>
 
-              {/* Security */}
-              <div className="backdrop-blur-sm bg-[#BFE9F0]/30 border border-[#1F7A8C]/20 rounded-xl p-4">
-                <h3 className="text-sm font-semibold text-[#0A2A2F] mb-4">Security Credentials</h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                      <Key size={16} />
-                      Temporary Password <span className="text-red-500">*</span>
-                    </label>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={formData.temporaryPassword}
-                        onChange={(e) => setFormData({ ...formData, temporaryPassword: e.target.value })}
-                        placeholder="Enter or generate password"
-                        className="flex-1 px-4 py-2.5 bg-white/60 border border-white/40 rounded-xl text-[#0A2A2F] placeholder-gray-400 focus:outline-none focus:border-[#1F7A8C] focus:ring-2 focus:ring-[#1F7A8C]/30 transition-all font-mono"
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={generatePassword}
-                        className="px-4 py-2.5 bg-gradient-to-r from-[#1F7A8C] to-[#BFE9F0] text-white rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-200 font-semibold"
-                      >
-                        Generate
-                      </button>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-2">User will be required to change password on first login</p>
-                  </div>
-
-                  <div className="flex items-start gap-3 bg-white/50 rounded-lg p-3">
-                    <input
-                      type="checkbox"
-                      id="sendSMS"
-                      checked={formData.sendSMS}
-                      onChange={(e) => setFormData({ ...formData, sendSMS: e.target.checked })}
-                      className="w-4 h-4 mt-1 rounded accent-[#1F7A8C]"
-                    />
-                    <label htmlFor="sendSMS" className="text-sm text-gray-700 flex items-center gap-2">
-                      <Send size={14} />
-                      Send credentials via SMS to user's phone number
-                    </label>
-                  </div>
+              {/* Password Section */}
+              <div className="p-8 bg-blue-50/50 rounded-[2.5rem] border border-blue-100/50 space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-black text-blue-600 uppercase tracking-[0.2em]">Secure Credentials</h3>
+                  <button 
+                    type="button"
+                    onClick={generatePassword}
+                    className="text-[10px] font-black text-blue-600 hover:underline uppercase tracking-widest"
+                  >
+                    Generate Strong Entropy
+                  </button>
+                </div>
+                <div className="relative group">
+                  <Key className="absolute left-6 top-1/2 -translate-y-1/2 text-blue-600" size={18} />
+                  <input
+                    type="text"
+                    value={formData.temporaryPassword}
+                    onChange={(e) => setFormData({ ...formData, temporaryPassword: e.target.value })}
+                    placeholder="Temporary Authorization Key"
+                    className="w-full pl-16 pr-8 py-5 bg-white border border-blue-100 rounded-[2rem] text-gray-900 font-mono font-bold focus:outline-none focus:ring-8 focus:ring-blue-600/5 transition-all"
+                  />
+                </div>
+                <div className="flex items-center gap-4 px-4 py-2">
+                  <input
+                    type="checkbox"
+                    id="sendSMS"
+                    checked={formData.sendSMS}
+                    onChange={(e) => setFormData({ ...formData, sendSMS: e.target.checked })}
+                    className="w-5 h-5 rounded-lg border-2 border-blue-200 accent-blue-600"
+                  />
+                  <label htmlFor="sendSMS" className="text-[10px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                    <Send size={14} />
+                    Notify agent via encrypted SMS
+                  </label>
                 </div>
               </div>
 
-              {/* Submit Button */}
-              <div className="pt-4">
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-gradient-to-r from-[#1F7A8C] to-[#2ECC71] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2"
-                >
-                  <UserPlus size={20} />
-                  Create User Account
-                </button>
-              </div>
+              <button
+                type="submit"
+                className="w-full py-6 bg-blue-600 text-white font-black uppercase tracking-[0.3em] rounded-[2rem] shadow-2xl shadow-blue-300 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-[0.98]"
+              >
+                Execute Identity Creation
+              </button>
             </form>
-
-            {/* Security Notice */}
-            <div className="mt-6 backdrop-blur-sm bg-red-50/50 border border-red-200/40 rounded-xl p-4">
-              <p className="text-xs text-red-800 font-medium">
-                ⚠️ Authorized personnel only. All user creation activities are logged and monitored. Ensure proper authorization before creating accounts.
-              </p>
-            </div>
           </div>
         </div>
 
-        {/* Active Users List */}
-        <div className="lg:col-span-1">
-          <div className="backdrop-blur-xl bg-white/70 border border-white/40 rounded-2xl shadow-xl p-6">
-            <h2 className="text-lg font-semibold text-[#0A2A2F] mb-4">Active Users</h2>
-            <div className="space-y-3">
-              {users.map((user) => (
-                <div
-                  key={user.id}
-                  className="backdrop-blur-sm bg-white/60 border border-white/40 rounded-xl p-3 hover:shadow-md transition-all"
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1">
-                      <p className="font-semibold text-[#0A2A2F] text-sm">{user.name}</p>
-                      <p className="text-xs text-gray-600">{user.email}</p>
-                    </div>
-                    <div
-                      className={`px-2 py-1 rounded-lg text-xs font-medium ${
-                        user.status === "active" ? "bg-green-100 text-[#2ECC71]" : "bg-gray-100 text-gray-600"
-                      }`}
-                    >
-                      {user.status.toUpperCase()}
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-600">{user.role}</span>
-                    <span className="text-[#1F7A8C] font-medium">{user.station}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Directory Panel */}
+        <div className="space-y-8">
+          <div className="glass rounded-[3rem] p-10 min-h-[600px] flex flex-col relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+             
+             <div className="flex items-center justify-between mb-10">
+               <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight flex items-center gap-4">
+                 <Shield className="text-blue-600" />
+                 Active Directory
+               </h2>
+               <div className="px-4 py-2 bg-blue-50 rounded-xl text-[10px] font-black text-blue-600 uppercase tracking-widest">
+                 {users.length} Records
+               </div>
+             </div>
+
+             <div className="relative mb-8 group">
+               <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600" size={16} />
+               <input 
+                 type="text" 
+                 placeholder="Search Directory..." 
+                 className="w-full pl-14 pr-6 py-4 bg-white/60 border border-gray-100 rounded-2xl text-xs font-bold text-gray-900 focus:outline-none focus:border-blue-600 transition-all"
+               />
+             </div>
+
+             <div className="flex-1 space-y-4 overflow-y-auto custom-scrollbar pr-2">
+               <AnimatePresence>
+                 {users.map((user) => (
+                   <motion.div
+                     key={user.id}
+                     initial={{ opacity: 0, x: 20 }}
+                     animate={{ opacity: 1, x: 0 }}
+                     exit={{ opacity: 0, scale: 0.9 }}
+                     whileHover={{ x: -5 }}
+                     className="p-5 bg-white/40 backdrop-blur-md border border-white/20 rounded-3xl group hover:border-blue-500/30 transition-all"
+                   >
+                     <div className="flex items-start justify-between mb-3">
+                       <div className="flex items-center gap-4">
+                         <div className="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-black text-sm">
+                           {user.name.charAt(0)}
+                         </div>
+                         <div>
+                           <p className="text-sm font-black text-gray-900 leading-tight">{user.name}</p>
+                           <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-1">{user.role}</p>
+                         </div>
+                       </div>
+                       <div className="flex gap-1">
+                         <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"><Edit2 size={14} /></button>
+                         <button className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"><Trash2 size={14} /></button>
+                       </div>
+                     </div>
+                     <div className="flex items-center justify-between pt-3 border-t border-gray-100/50">
+                        <div className="flex items-center gap-1.5 text-[9px] font-black text-gray-400 uppercase tracking-widest">
+                          <MapPin size={10} className="text-blue-600" />
+                          {user.station}
+                        </div>
+                        <span className="px-3 py-1 bg-green-50 text-green-600 text-[8px] font-black uppercase tracking-widest rounded-lg">Active</span>
+                     </div>
+                   </motion.div>
+                 ))}
+               </AnimatePresence>
+             </div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

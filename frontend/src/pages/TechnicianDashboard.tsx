@@ -243,6 +243,6 @@ export function TechnicianDashboard() {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

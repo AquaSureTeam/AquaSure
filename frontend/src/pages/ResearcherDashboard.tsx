@@ -1,34 +1,43 @@
-
-import {  FileSpreadsheet, Filter, TrendingUp, Calendar, Database, Search, Download } from "lucide-react";
+import { FileSpreadsheet, Filter, TrendingUp, Calendar, Database, Search, Download } from "lucide-react";
 import { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function ResearcherDashboard() {
   const [historicalData, setHistoricalData] = useState<any[]>([]);
+  const [tableData, setTableData] = useState<any[]>([]);
   const [dateRange, setDateRange] = useState("30days");
   const [selectedParameter, setSelectedParameter] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Generate long-term historical data
-    const dataPoints = dateRange === "30days" ? 30 : dateRange === "90days" ? 90 : 365;
-    const data = Array.from({ length: dataPoints }, (_, i) => ({
-      date: new Date(Date.now() - (dataPoints - i) * 24 * 60 * 60 * 1000).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-      pH: 7.2 + Math.random() * 0.8 - 0.4,
-      turbidity: 3.5 + Math.random() * 2,
-      temperature: 22 + Math.random() * 4,
-      conductivity: 450 + Math.random() * 100,
-    }));
-    setHistoricalData(data);
-  }, [dateRange]);
+    // Simulate long-term historical data fetch
+    const fetchResearcherData = async () => {
+      setLoading(true);
+      setTimeout(() => {
+        const dataPoints = dateRange === "30days" ? 30 : dateRange === "90days" ? 90 : 365;
+        const hData = Array.from({ length: dataPoints }, (_, i) => ({
+          date: new Date(Date.now() - (dataPoints - i) * 24 * 60 * 60 * 1000).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+          pH: 7.2 + Math.random() * 0.8 - 0.4,
+          turbidity: 3.5 + Math.random() * 2,
+          temperature: 22 + Math.random() * 4,
+          conductivity: 450 + Math.random() * 100,
+        }));
+        setHistoricalData(hData);
 
-  const tableData = [
-    { date: "2025-03-02", time: "14:30", pH: 7.4, turbidity: 3.8, temp: 24.2, conductivity: 478 },
-    { date: "2025-03-02", time: "14:00", pH: 7.3, turbidity: 3.9, temp: 24.1, conductivity: 482 },
-    { date: "2025-03-02", time: "13:30", pH: 7.5, turbidity: 3.7, temp: 24.3, conductivity: 475 },
-    { date: "2025-03-02", time: "13:00", pH: 7.2, turbidity: 4.1, temp: 23.9, conductivity: 485 },
-    { date: "2025-03-02", time: "12:30", pH: 7.4, turbidity: 3.6, temp: 24.0, conductivity: 479 },
-  ];
+        setTableData([
+          { date: "2025-03-02", time: "14:30", pH: 7.4, turbidity: 3.8, temp: 24.2, conductivity: 478 },
+          { date: "2025-03-02", time: "14:00", pH: 7.3, turbidity: 3.9, temp: 24.1, conductivity: 482 },
+          { date: "2025-03-02", time: "13:30", pH: 7.5, turbidity: 3.7, temp: 24.3, conductivity: 475 },
+          { date: "2025-03-02", time: "13:00", pH: 7.2, turbidity: 4.1, temp: 23.9, conductivity: 485 },
+          { date: "2025-03-02", time: "12:30", pH: 7.4, turbidity: 3.6, temp: 24.0, conductivity: 479 },
+        ]);
+        setLoading(false);
+      }, 1400);
+    };
+
+    fetchResearcherData();
+  }, [dateRange]);
 
   const handleExportCSV = () => {
     const csvContent = [
@@ -44,6 +53,14 @@ export function ResearcherDashboard() {
     a.click();
     window.URL.revokeObjectURL(url);
   };
+
+  if (loading) {
+    return (
+      <div className="h-[70vh] flex items-center justify-center">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   return (
     <motion.div 
@@ -259,7 +276,7 @@ export function ResearcherDashboard() {
         className="glass border-blue-200 bg-blue-50/30 rounded-3xl p-6"
       >
         <div className="flex items-center gap-6">
-          <div className="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-blue-200">
+          <div className="w-14 h-14 bg-gray-900 text-white rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-blue-200">
             <Database size={28} />
           </div>
           <div>

@@ -6,31 +6,54 @@ import { motion, AnimatePresence } from "framer-motion";
 export function OperatorDashboard() {
   const [valveStatus, setValveStatus] = useState<"open" | "closed">("open");
   const [chartData, setChartData] = useState<any[]>([]);
+  const [sensorData, setSensorData] = useState<any[]>([]);
+  const [alertHistory, setAlertHistory] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Simulate complex data fetch for Operator
+    const fetchOperatorData = async () => {
+      setLoading(true);
+      setTimeout(() => {
+        // Trend data
+        const tData = Array.from({ length: 12 }, (_, i) => ({
+          time: `${i * 2}:00`,
+          value: 7.2 + Math.random() * 0.6 - 0.3,
+        }));
+        setChartData(tData);
 
-    const data = Array.from({ length: 12 }, (_, i) => ({
-      time: `${i * 2}:00`,
-      value: 7.2 + Math.random() * 0.6 - 0.3,
-    }));
-    setChartData(data);
+        // Sensor matrix
+        setSensorData([
+          { name: "pH", value: 7.8, unit: "pH", status: "warning", min: 6.5, max: 8.5, current: 7.8 },
+          { name: "Turbidity", value: 4.2, unit: "NTU", status: "safe", min: 0, max: 5, current: 4.2 },
+          { name: "Temperature", value: 24.5, unit: "°C", status: "safe", min: 20, max: 30, current: 24.5 },
+          { name: "Electrical Conductivity", value: 485, unit: "μS/cm", status: "safe", min: 200, max: 800, current: 485 },
+        ]);
+
+        // Alerts
+        setAlertHistory([
+          { id: 1, message: "pH approaching upper threshold", time: "30 min ago", severity: "warning" },
+          { id: 2, message: "Turbidity spike detected", time: "2 hours ago", severity: "warning" },
+          { id: 3, message: "Normal operation resumed", time: "4 hours ago", severity: "info" },
+          { id: 4, message: "Temperature within safe range", time: "6 hours ago", severity: "info" },
+        ]);
+
+        setLoading(false);
+      }, 1200);
+    };
+
+    fetchOperatorData();
   }, []);
 
   const complianceStatus: "safe" | "warning" | "violation" = "warning";
 
-  const sensorData = [
-    { name: "pH", value: 7.8, unit: "pH", status: "warning", min: 6.5, max: 8.5, current: 7.8 },
-    { name: "Turbidity", value: 4.2, unit: "NTU", status: "safe", min: 0, max: 5, current: 4.2 },
-    { name: "Temperature", value: 24.5, unit: "°C", status: "safe", min: 20, max: 30, current: 24.5 },
-    { name: "Electrical Conductivity", value: 485, unit: "μS/cm", status: "safe", min: 200, max: 800, current: 485 },
-  ];
-
-  const alertHistory = [
-    { id: 1, message: "pH approaching upper threshold", time: "30 min ago", severity: "warning" },
-    { id: 2, message: "Turbidity spike detected", time: "2 hours ago", severity: "warning" },
-    { id: 3, message: "Normal operation resumed", time: "4 hours ago", severity: "info" },
-    { id: 4, message: "Temperature within safe range", time: "6 hours ago", severity: "info" },
-  ];
+  if (loading) {
+    return (
+      <div className="h-[70vh] flex items-center justify-center">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   return (
     <motion.div 
@@ -70,8 +93,6 @@ export function OperatorDashboard() {
       </div>
 
       {/* Compliance Status & Valve Control */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Compliance Status Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Compliance Status Panel */}
         <motion.div 
@@ -139,7 +160,6 @@ export function OperatorDashboard() {
             </button>
           </div>
         </motion.div>
-      </div>
       </div>
 
       {/* Sensor Cards Grid */}
