@@ -63,7 +63,7 @@ export function AlertsView() {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-8 space-y-10 relative"
+      className="p-4 md:p-8 space-y-6 md:space-y-10 relative"
     >
       {/* Decorative Background */}
       <div className="absolute top-0 right-0 -z-10 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[120px]" />
@@ -108,7 +108,7 @@ export function AlertsView() {
       </div>
 
       {/* Control Strip */}
-      <div className="glass rounded-[2rem] p-4 flex flex-wrap items-center justify-between gap-6">
+      <div className="glass rounded-[2rem] p-4 md:p-6 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-6">
         <div className="flex items-center gap-4 flex-1 min-w-[300px]">
           <div className="flex items-center gap-2 px-6 py-3 bg-white/60 border border-gray-100 rounded-2xl flex-1 group">
             <Search size={16} className="text-gray-400 group-focus-within:text-blue-600 transition-colors" />
@@ -116,13 +116,13 @@ export function AlertsView() {
           </div>
         </div>
         
-        <div className="flex items-center gap-3">
-          <div className="flex bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100">
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <div className="flex bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100 w-full sm:w-auto overflow-x-auto custom-scrollbar">
             {(["all", "active", "resolved"] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                className={`flex-1 sm:flex-none px-4 md:px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                   filter === f ? "bg-blue-600 text-white shadow-lg" : "text-gray-400 hover:text-gray-600"
                 }`}
               >
@@ -131,12 +131,12 @@ export function AlertsView() {
             ))}
           </div>
           
-          <div className="flex bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100">
+          <div className="flex bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100 w-full sm:w-auto overflow-x-auto custom-scrollbar">
             {(["all", "critical", "warning", "info"] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => setTypeFilter(t)}
-                className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                className={`flex-1 sm:flex-none px-3 md:px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                   typeFilter === t ? "bg-gray-900 text-white shadow-lg" : "text-gray-400 hover:text-gray-600"
                 }`}
               >

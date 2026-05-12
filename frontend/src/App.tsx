@@ -25,6 +25,7 @@ function App() {
   const [activeView, setActiveView] = useState("dashboard");
   const [notificationCount, setNotificationCount] = useState(3);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 const handleLogin = (userName: string, email: string, password: string, role: UserRole) => {
   if (userName && email && password) {
@@ -151,27 +152,44 @@ const handleLogin = (userName: string, email: string, password: string, role: Us
       />
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-blue-200/5 rounded-full blur-[120px] pointer-events-none" />
       
-      <Sidebar 
-        activeView={activeView} 
-        onViewChange={setActiveView}
-        onLogout={handleLogout}
-        userName={userName}
-        userRole={userRole}
-        isCollapsed={isSidebarCollapsed}
-        onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-      />
+      {/* Sidebar - Desktop: Sticky, Mobile: Drawer */}
+      <div className={`
+        fixed inset-y-0 left-0 z-50 transform lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out
+        ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}>
+        <Sidebar 
+          activeView={activeView} 
+          onViewChange={(view) => {
+            setActiveView(view);
+            setIsMobileMenuOpen(false);
+          }}
+          onLogout={handleLogout}
+          userName={userName}
+          userRole={userRole}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        />
+      </div>
+
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
 
       <div className="flex-1 flex flex-col overflow-hidden relative z-10">
-        {activeView !== "dashboard" && (
-          <Header 
-            onNotificationClick={handleNotificationClick}
-            notificationCount={notificationCount}
-            userName={userName}
-            userRole={userRole}
-          />
-        )}
+        <Header 
+          onNotificationClick={handleNotificationClick}
+          notificationCount={notificationCount}
+          onLogout={handleLogout}
+          userName={userName}
+          userRole={userRole}
+          onMenuClick={() => setIsMobileMenuOpen(true)}
+        />
 
-        <main className="flex-1 overflow-y-auto px-8 py-6">
+        <main className="flex-1 overflow-y-auto px-4 md:px-8 py-4 md:py-6">
           <div className="max-w-7xl mx-auto">
             {renderView()}
           </div>

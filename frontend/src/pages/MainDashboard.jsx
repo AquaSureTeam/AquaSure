@@ -55,7 +55,7 @@ export function DashboardView() {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="p-8 space-y-10"
+        className="p-4 md:p-8 space-y-6 md:space-y-10"
       >
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div>
@@ -68,7 +68,7 @@ export function DashboardView() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-8">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="h-64 glass rounded-[3rem] border-dashed border-2 border-blue-100 flex flex-col items-center justify-center group hover:border-blue-300 transition-all">
               <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-200 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
@@ -79,7 +79,7 @@ export function DashboardView() {
           ))}
         </div>
 
-        <div className="glass rounded-[3rem] p-16 flex flex-col items-center justify-center border-dashed border-2 border-blue-100 text-center relative overflow-hidden">
+        <div className="glass rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 flex flex-col items-center justify-center border-dashed border-2 border-blue-100 text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full -mr-48 -mt-48 blur-3xl" />
           <div className="relative z-10">
             <div className="w-24 h-24 bg-blue-600 text-white rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-blue-200">
@@ -101,7 +101,7 @@ export function DashboardView() {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="p-8 space-y-10"
+      className="p-4 md:p-8 space-y-6 md:space-y-10"
     >
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
@@ -117,11 +117,11 @@ export function DashboardView() {
         <SensorCard title="Conductivity" value={sensorData.conductivity.value} unit={sensorData.conductivity.unit} status={sensorData.conductivity.status} icon={Zap} data={sensorData.conductivity.data} />
       </div>
 
-      <div className="glass rounded-[3rem] p-2 overflow-hidden">
+      <div className="glass rounded-[2rem] md:rounded-[3rem] p-1 md:p-2 overflow-hidden">
         <MainChart />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10">
         <AlertPanel />
         <SystemHealth />
       </div>

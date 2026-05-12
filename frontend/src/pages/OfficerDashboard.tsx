@@ -98,7 +98,7 @@ export function OfficerDashboard() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-8 space-y-8 relative"
+      className="p-4 md:p-8 space-y-6 md:space-y-10 relative"
     >
       {/* Decorative Elements */}
       <div className="absolute top-0 right-0 -z-10 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px]" />

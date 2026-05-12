@@ -25,118 +25,108 @@ export function LoginView({ onLogin, onSwitchToSignup }: LoginViewProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Dynamic Background Elements */}
-      <motion.div 
-        animate={{ 
-          scale: [1, 1.2, 1],
-          rotate: [0, 90, 0],
-          x: [0, 100, 0],
-          y: [0, 50, 0],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="fixed -top-48 -left-48 w-[40rem] h-[40rem] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none" 
-      />
-      <motion.div 
-        animate={{ 
-          scale: [1, 1.3, 1],
-          rotate: [0, -45, 0],
-          x: [0, -100, 0],
-          y: [0, 80, 0],
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear", delay: 2 }}
-        className="fixed -bottom-48 -right-48 w-[50rem] h-[50rem] bg-blue-400/10 rounded-full blur-[150px] pointer-events-none" 
-      />
+    <div className="min-h-screen bg-[#F0F4F8] flex items-center justify-center p-4 md:p-10 relative overflow-hidden font-sans">
+      {/* Pristine Background Architecture */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-400/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-600/5 rounded-full blur-[150px]" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-white via-transparent to-blue-50/30" />
+      </div>
 
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        initial={{ opacity: 0, scale: 0.98, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="w-full max-w-[1100px] min-h-[700px] grid lg:grid-cols-2 bg-white/80 backdrop-blur-2xl rounded-[3.5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border border-white/40 relative z-10"
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="w-full max-w-[1100px] relative z-10 flex flex-col lg:flex-row bg-white/70 backdrop-blur-3xl rounded-[3rem] border border-white shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden"
       >
-        {/* Left Side - Brand Identity */}
-        <div className="relative flex flex-col justify-between p-16 overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-blue-800">
-          {/* Animated Glass Spheres */}
-          <motion.div 
-            animate={{ y: [0, -40, 0], x: [0, 20, 0] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -left-20 top-20 w-64 h-64 bg-white/10 rounded-full blur-2xl" 
-          />
-          <motion.div 
-            animate={{ y: [0, 50, 0], x: [0, -30, 0] }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute -right-24 bottom-24 w-80 h-80 bg-blue-400/20 rounded-full border border-white/10" 
-          />
-
+        {/* Visual Brand Section */}
+        <div className="hidden lg:flex lg:w-1/2 bg-blue-600 p-20 flex-col justify-between relative overflow-hidden">
+          {/* Animated Water Ripples */}
+          <div className="absolute inset-0">
+            <motion.div 
+              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+              transition={{ duration: 10, repeat: Infinity }}
+              className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_white_0%,_transparent_70%)] opacity-20"
+            />
+          </div>
+          
           <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-12">
-               <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl border border-white/20">
-                 <Waves size={32} className="text-white" />
-               </div>
-               <h1 className="text-3xl font-black text-white tracking-tighter">IsokoSense</h1>
+            <div className="flex items-center gap-4 mb-16">
+              <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30 shadow-lg">
+                <Waves size={32} className="text-white" />
+              </div>
+              <h1 className="text-3xl font-black text-white tracking-tighter">IsokoSense</h1>
             </div>
             
-            <div className="space-y-6">
-              <h2 className="text-6xl font-black text-white leading-none tracking-tighter">
-                CLEAN WATER <br />
-                <span className="text-blue-200">FOR ALL.</span>
+            <div className="space-y-8">
+              <h2 className="text-6xl font-black text-white leading-[1.1] tracking-tighter">
+                Smart Water <br />
+                <span className="text-blue-200">Monitoring.</span>
               </h2>
-              <p className="text-lg font-bold text-blue-100/70 max-w-sm leading-relaxed">
-                Access the world's most advanced water quality monitoring ecosystem. 
-                Real-time telemetry, historical analysis, and smart response tools.
+              <p className="text-blue-50/80 font-medium text-lg leading-relaxed max-w-sm">
+                Advanced telemetry for a sustainable future. Access real-time insights and manage your water quality with ease.
               </p>
             </div>
           </div>
 
           <div className="relative z-10">
-            <div className="flex items-center gap-4 text-white/50">
-              <ShieldCheck size={20} />
-              <p className="text-[10px] font-black uppercase tracking-[0.3em]">AES-256 SECURED CHANNEL</p>
-            </div>
+             <div className="flex items-center gap-4 py-3 px-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 w-fit">
+               <ShieldCheck size={20} className="text-blue-200" />
+               <p className="text-[10px] font-black text-white uppercase tracking-widest">Secured Connection Active</p>
+             </div>
           </div>
         </div>
 
-        {/* Right Side - Intelligence Access */}
-        <div className="p-16 lg:p-24 flex flex-col justify-center">
-          <div className="max-w-md mx-auto w-full">
-            <div className="mb-12">
-              <h2 className="text-5xl font-black text-gray-900 tracking-tighter mb-3 uppercase">Sign In</h2>
-              <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Identify yourself to the core system</p>
+        {/* Form Section */}
+        <div className="flex-1 p-8 md:p-16 lg:p-20 bg-white/40">
+          <div className="max-w-md mx-auto">
+            {/* Mobile Logo */}
+            <div className="lg:hidden flex items-center gap-3 mb-10">
+              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
+                <Waves size={20} className="text-white" />
+              </div>
+              <h1 className="text-2xl font-black text-gray-900 tracking-tighter">IsokoSense</h1>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="space-y-6">
+            <div className="mb-12">
+              <h2 className="text-4xl font-black text-gray-900 tracking-tight mb-2">Welcome Back</h2>
+              <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Please sign in to continue</p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-4">
                 <div className="relative group">
-                  <UserIcon className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={20} />
+                  <UserIcon className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                   <input
                     type="text"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                    placeholder="Full Access Name"
-                    className="w-full bg-gray-50 border border-transparent rounded-3xl py-5 pl-16 pr-6 outline-none focus:bg-white focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 transition-all placeholder:text-gray-300 font-bold text-sm"
+                    placeholder="Full Name"
+                    className="w-full bg-white/80 border border-gray-100 rounded-2xl py-5 pl-16 pr-6 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all text-gray-900 font-bold placeholder:text-gray-300 shadow-sm"
                     required
                   />
                 </div>
 
                 <div className="relative group">
-                  <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={20} />
+                  <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Corporate Email"
-                    className="w-full bg-gray-50 border border-transparent rounded-3xl py-5 pl-16 pr-6 outline-none focus:bg-white focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 transition-all placeholder:text-gray-300 font-bold text-sm"
+                    placeholder="Email Address"
+                    className="w-full bg-white/80 border border-gray-100 rounded-2xl py-5 pl-16 pr-6 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all text-gray-900 font-bold placeholder:text-gray-300 shadow-sm"
                     required
                   />
                 </div>
 
                 <div className="relative group">
-                  <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={20} />
+                  <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Security Credential"
-                    className="w-full bg-gray-50 border border-transparent rounded-3xl py-5 pl-16 pr-20 outline-none focus:bg-white focus:border-blue-600 focus:ring-8 focus:ring-blue-600/5 transition-all placeholder:text-gray-300 font-bold text-sm"
+                    placeholder="Password"
+                    className="w-full bg-white/80 border border-gray-100 rounded-2xl py-5 pl-16 pr-20 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all text-gray-900 font-bold placeholder:text-gray-300 shadow-sm"
                     required
                   />
                   <button
@@ -149,11 +139,11 @@ export function LoginView({ onLogin, onSwitchToSignup }: LoginViewProps) {
                 </div>
 
                 <div className="relative group">
-                  <Shield className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-blue-600 transition-colors" size={20} />
+                  <Shield className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                   <select
                     value={selectedRole}
                     onChange={(e) => setSelectedRole(e.target.value as UserRole)}
-                    className="w-full bg-gray-50 border border-transparent rounded-3xl py-5 pl-16 pr-10 outline-none focus:bg-white focus:border-blue-600 transition-all appearance-none cursor-pointer text-sm font-bold text-gray-700"
+                    className="w-full bg-white/80 border border-gray-100 rounded-2xl py-5 pl-16 pr-10 outline-none focus:border-blue-500 transition-all appearance-none cursor-pointer text-sm font-bold text-gray-700 shadow-sm"
                     required
                   >
                     <option value="officer">Environmental Officer</option>
@@ -171,31 +161,33 @@ export function LoginView({ onLogin, onSwitchToSignup }: LoginViewProps) {
                     {rememberMe && <CheckCircle size={14} className="text-white" />}
                   </div>
                   <input type="checkbox" className="hidden" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Keep Authenticated</span>
+                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Remember Me</span>
                 </label>
                 <button type="button" className="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:underline">
-                  Key Recovery?
+                  Forgot Password?
                 </button>
               </div>
 
-              <div className="space-y-4 pt-4">
+              <div className="space-y-6 pt-4">
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white font-black py-6 rounded-3xl shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-[0.98] text-xs uppercase tracking-[0.3em]"
+                  className="w-full bg-blue-600 text-white font-black py-6 rounded-2xl shadow-xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-[0.98] text-xs uppercase tracking-[0.3em]"
                 >
-                  Authorize Entry
+                  Sign In
                 </button>
-                <div className="flex items-center gap-6 py-4">
+                
+                <div className="flex items-center gap-6">
                   <div className="flex-1 h-px bg-gray-100" />
-                  <span className="text-[10px] font-black text-gray-200 uppercase tracking-widest">Or</span>
+                  <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">OR</span>
                   <div className="flex-1 h-px bg-gray-100" />
                 </div>
+
                 <button
                   type="button"
                   onClick={onSwitchToSignup}
-                  className="w-full bg-white border-2 border-gray-100 hover:border-blue-600 hover:text-blue-600 text-gray-400 font-black py-6 rounded-3xl transition-all active:scale-[0.98] text-[10px] uppercase tracking-[0.3em]"
+                  className="w-full bg-white border-2 border-gray-100 hover:border-blue-600 hover:text-blue-600 text-gray-400 font-black py-6 rounded-2xl transition-all active:scale-[0.98] text-[10px] uppercase tracking-[0.3em]"
                 >
-                  Create New Identity
+                  Create Account
                 </button>
               </div>
             </form>

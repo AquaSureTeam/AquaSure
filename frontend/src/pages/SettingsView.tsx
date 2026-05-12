@@ -35,7 +35,7 @@ export function SettingsView() {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-8 space-y-10 relative"
+      className="p-4 md:p-8 space-y-6 md:space-y-10 relative"
     >
       {/* Decorative Background */}
       <div className="absolute top-0 right-0 -z-10 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[120px] -mr-48 -mt-48" />
@@ -43,12 +43,12 @@ export function SettingsView() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tight">System <span className="text-blue-600">Preferences</span></h1>
-          <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Global Configuration & Threshold Control</p>
+          <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">System <span className="text-blue-600">Preferences</span></h1>
+          <p className="text-xs md:text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Global Configuration & Threshold Control</p>
         </div>
         <button
           onClick={handleSave}
-          className="flex items-center gap-3 px-8 py-4 bg-blue-600 text-white font-black uppercase tracking-[0.2em] text-xs rounded-[2rem] shadow-2xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-95"
+          className="flex items-center justify-center gap-3 px-8 py-4 bg-blue-600 text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs rounded-[2rem] shadow-2xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-95 self-start lg:self-auto w-full lg:w-auto"
         >
           <Save size={18} />
           {saved ? "Synchronized" : "Commit Changes"}
@@ -57,7 +57,7 @@ export function SettingsView() {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
         {/* Alerts & Notifications */}
-        <div className="glass rounded-[3rem] p-10 space-y-10">
+        <div className="glass rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 space-y-8 md:space-y-10">
           <div className="flex items-center gap-5">
             <div className="p-4 bg-blue-50 text-blue-600 rounded-2xl shadow-inner">
               <Bell size={24} />
@@ -121,7 +121,7 @@ export function SettingsView() {
         </div>
 
         {/* Node Monitoring Configuration */}
-        <div className="glass rounded-[3rem] p-10 space-y-10">
+        <div className="glass rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 space-y-8 md:space-y-10">
           <div className="flex items-center gap-5">
             <div className="p-4 bg-blue-50 text-blue-600 rounded-2xl shadow-inner">
               <Wifi size={24} />
@@ -174,7 +174,7 @@ export function SettingsView() {
         </div>
 
         {/* Global Threshold Matrix */}
-        <div className="xl:col-span-2 glass rounded-[3rem] p-10 overflow-hidden relative">
+        <div className="xl:col-span-2 glass rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 overflow-hidden relative">
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full -mr-48 -mb-48 blur-[100px]" />
           
           <div className="flex items-center gap-5 mb-12">
@@ -224,13 +224,13 @@ export function SettingsView() {
       </div>
 
       {/* Footer / Lock Notice */}
-      <div className="flex items-center gap-6 p-8 glass bg-gray-50/50 rounded-[2.5rem]">
-        <div className="w-14 h-14 bg-gray-900 text-white rounded-2xl flex items-center justify-center shrink-0 shadow-2xl">
-          <Lock size={24} />
+      <div className="flex flex-col sm:flex-row items-center gap-6 p-6 md:p-8 glass bg-gray-50/50 rounded-[2rem] md:rounded-[2.5rem]">
+        <div className="w-12 h-12 md:w-14 md:h-14 bg-gray-900 text-white rounded-2xl flex items-center justify-center shrink-0 shadow-2xl">
+          <Lock size={20} className="md:size-6" />
         </div>
-        <div>
-          <h3 className="text-[10px] font-black text-gray-900 uppercase tracking-widest">Configuration Lock</h3>
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter mt-1">Changes are protected by 256-bit AES encryption. Unauthorized modifications are prohibited by environmental regulation.</p>
+        <div className="text-center sm:text-left">
+          <h3 className="text-[9px] md:text-[10px] font-black text-gray-900 uppercase tracking-widest">Configuration Lock</h3>
+          <p className="text-[8px] md:text-[10px] font-bold text-gray-400 uppercase tracking-tighter mt-1">Changes are protected by 256-bit AES encryption. Unauthorized modifications are prohibited by environmental regulation.</p>
         </div>
       </div>
     </motion.div>

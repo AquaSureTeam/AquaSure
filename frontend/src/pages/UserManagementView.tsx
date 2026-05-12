@@ -79,7 +79,7 @@ export function UserManagementView() {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-8 space-y-10 relative"
+      className="p-4 md:p-8 space-y-6 md:space-y-10 relative"
     >
       {/* Decorative Background */}
       <div className="absolute top-0 right-0 -z-10 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[120px]" />
@@ -87,12 +87,12 @@ export function UserManagementView() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tight">Staff <span className="text-blue-600">Access</span> Control</h1>
-          <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Member Management & Identity Center</p>
+          <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">Staff <span className="text-blue-600">Access</span> Control</h1>
+          <p className="text-xs md:text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Member Management & Identity Center</p>
         </div>
-        <div className="flex items-center gap-4 bg-blue-600 text-white px-8 py-4 rounded-[2rem] shadow-xl shadow-blue-200">
-          <ShieldCheck size={20} />
-          <span className="text-[10px] font-black uppercase tracking-[0.2em]">Authorized Access Only</span>
+        <div className="flex items-center gap-4 bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-[2rem] shadow-xl shadow-blue-200 self-start lg:self-auto">
+          <ShieldCheck size={18} className="md:size-5" />
+          <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em]">Authorized Access Only</span>
         </div>
       </div>
 
