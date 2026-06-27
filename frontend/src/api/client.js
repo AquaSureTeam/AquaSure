@@ -49,7 +49,6 @@ export const api = {
   },
 
   getLatestReadings: () => request('/api/readings/latest'),
-
   getDeviceReadings: (deviceId, params = {}) => {
     const query = new URLSearchParams(params).toString();
     return request(`/api/readings/${deviceId}${query ? `?${query}` : ''}`);
