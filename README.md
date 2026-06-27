@@ -1,7 +1,7 @@
 # 💧 IsokoSense
 
 <p align="center">
-  <img src="./docs/logo.png" alt="IsokoSense Logo" width="150"/>
+  <img src="./docs/image.png" alt="IsokoSense Logo" width="150"/>
 </p>
 
 <p align="center">
