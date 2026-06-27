@@ -4,51 +4,38 @@
 
 @layer base {
   body {
-    @apply text-gray-900 antialiased bg-[#F0F7FF];
+    @apply antialiased;
+    background-color: #F0F4FF;
+    color: #1E1B4B;
   }
 }
 
 @layer components {
-  .glass {
-    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  .card {
+    @apply bg-white rounded-2xl border border-gray-100;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(99,102,241,0.06);
   }
-  
-  .glass-dark {
-    @apply bg-black/20 backdrop-blur-md border border-white/10 shadow-xl;
+  .card-hover {
+    @apply card transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
+  }
+  .btn-primary {
+    @apply bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors;
+  }
+  .btn-secondary {
+    @apply bg-white text-gray-700 px-5 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 hover:bg-gray-50 transition-colors;
+  }
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
   }
 
-  .water-gradient {
-    background: linear-gradient(135deg, #0061FF 0%, #60A5FA 100%);
-  }
-
-  /* Custom Scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
-
   ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    background: transparent;
   }
-
   ::-webkit-scrollbar-thumb {
-    @apply bg-brand/20 rounded-full hover:bg-brand/40 transition-colors;
+    @apply bg-indigo-200 rounded-full;
   }
-}
-
-.wave-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  line-height: 0;
-  transform: rotate(180deg);
-}
-
-.wave-container svg {
-  position: relative;
-  display: block;
-  width: calc(150% + 1.3px);
-  height: 150px;
 }

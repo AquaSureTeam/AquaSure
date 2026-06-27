@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { api } from '../api/client';
 import { StatusBadge } from '../utils/status.jsx';
 import { useAuth } from '../context/AuthContext';
-import { Plus, Pencil } from 'lucide-react';
+import { Plus, Pencil, Cpu } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const emptyForm = {
   deviceId: '',
@@ -15,16 +16,16 @@ const emptyForm = {
 
 export function DevicesPage() {
   const { isAdmin } = useAuth();
-  const [devices, setDevices] = useState([]);
+  const [devices, setDevices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState('');
 
   const fetchDevices = async () => {
     try {
-      const data = await api.getDevices();
+      const data: any = await api.getDevices();
       setDevices(data.devices || []);
     } catch (err) {
       console.error(err);
@@ -37,10 +38,9 @@ export function DevicesPage() {
     fetchDevices();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
     const payload = {
       ...form,
       location: {
@@ -49,7 +49,6 @@ export function DevicesPage() {
         lng: form.location.lng ? parseFloat(form.location.lng) : undefined,
       },
     };
-
     try {
       if (editingId) {
         await api.updateDevice(editingId, payload);
@@ -60,12 +59,12 @@ export function DevicesPage() {
       setEditingId(null);
       setForm(emptyForm);
       fetchDevices();
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
     }
   };
 
-  const startEdit = (device) => {
+  const startEdit = (device: any) => {
     setEditingId(device.deviceId);
     setForm({
       deviceId: device.deviceId,
@@ -83,29 +82,35 @@ export function DevicesPage() {
     setShowForm(true);
   };
 
-  const toggleActive = async (device) => {
+  const toggleActive = async (device: any) => {
     try {
       await api.updateDevice(device.deviceId, { active: !device.active });
       fetchDevices();
-    } catch (err) {
+    } catch (err: any) {
       alert(err.message);
     }
   };
 
   if (!isAdmin) {
     return (
-      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-800">
-        Device management is restricted to administrators.
+      <div className="card p-8 text-center">
+        <div className="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <Cpu size={24} className="text-amber-600" />
+        </div>
+        <h3 className="text-lg font-semibold text-gray-800 mb-1">Access restricted</h3>
+        <p className="text-sm text-gray-500">
+          Device management is available to administrators only.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-gray-900">Devices</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage Isoko Units and IsokoChambers</p>
+          <h1 className="text-2xl font-bold text-indigo-950">Devices</h1>
+          <p className="text-sm text-gray-500 mt-0.5">Manage monitoring units</p>
         </div>
         <button
           onClick={() => {
@@ -113,114 +118,121 @@ export function DevicesPage() {
             setEditingId(null);
             setForm(emptyForm);
           }}
-          className="flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-blue-700"
+          className="btn-primary flex items-center gap-2 w-fit"
         >
           <Plus size={16} />
-          Add Device
+          Add device
         </button>
       </div>
 
-      {showForm && (
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white rounded-3xl p-6 border border-gray-100 space-y-4"
-        >
-          <h3 className="text-lg font-black text-gray-900">
-            {editingId ? 'Edit Device' : 'Register New Device'}
-          </h3>
-          {error && <p className="text-red-600 text-sm">{error}</p>}
+      {/* Add / Edit form */}
+      <AnimatePresence>
+        {showForm && (
+          <motion.form
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            onSubmit={handleSubmit}
+            className="card p-6 space-y-4"
+          >
+            <h3 className="text-lg font-semibold text-gray-800">
+              {editingId ? 'Edit device' : 'Register new device'}
+            </h3>
+            {error && (
+              <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2">
+                {error}
+              </p>
+            )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              placeholder="Device ID (e.g. ISU-003)"
-              value={form.deviceId}
-              onChange={(e) => setForm({ ...form, deviceId: e.target.value })}
-              disabled={!!editingId}
-              required
-              className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm disabled:opacity-50"
-            />
-            <input
-              placeholder="Location ID"
-              value={form.locationId}
-              onChange={(e) => setForm({ ...form, locationId: e.target.value })}
-              required
-              className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm"
-            />
-            <input
-              placeholder="Device Name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              required
-              className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm"
-            />
-            <select
-              value={form.type}
-              onChange={(e) => setForm({ ...form, type: e.target.value })}
-              className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold"
-            >
-              <option value="IsokoUnit">Isoko Unit (Surface)</option>
-              <option value="IsokoChamber">IsokoChamber (Underground)</option>
-            </select>
-            <input
-              placeholder="Location Name"
-              value={form.location.name}
-              onChange={(e) =>
-                setForm({ ...form, location: { ...form.location, name: e.target.value } })
-              }
-              className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm"
-            />
-            <input
-              placeholder="District"
-              value={form.location.district}
-              onChange={(e) =>
-                setForm({ ...form, location: { ...form.location, district: e.target.value } })
-              }
-              className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm"
-            />
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                placeholder="Device ID (e.g. ISU-003)"
+                value={form.deviceId}
+                onChange={(e) => setForm({ ...form, deviceId: e.target.value })}
+                disabled={!!editingId}
+                required
+                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-400 disabled:opacity-50"
+              />
+              <input
+                placeholder="Location ID"
+                value={form.locationId}
+                onChange={(e) => setForm({ ...form, locationId: e.target.value })}
+                required
+                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-400"
+              />
+              <input
+                placeholder="Device name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                required
+                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-400"
+              />
+              <select
+                value={form.type}
+                onChange={(e) => setForm({ ...form, type: e.target.value })}
+                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-400"
+              >
+                <option value="IsokoUnit">Isoko Unit (Surface)</option>
+                <option value="IsokoChamber">IsokoChamber (Underground)</option>
+              </select>
+              <input
+                placeholder="Location name"
+                value={form.location.name}
+                onChange={(e) =>
+                  setForm({ ...form, location: { ...form.location, name: e.target.value } })
+                }
+                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-400"
+              />
+              <input
+                placeholder="District"
+                value={form.location.district}
+                onChange={(e) =>
+                  setForm({ ...form, location: { ...form.location, district: e.target.value } })
+                }
+                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-400"
+              />
+            </div>
 
-          <textarea
-            placeholder="Description"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-            className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm"
-            rows={2}
-          />
+            <textarea
+              placeholder="Description (optional)"
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-400 resize-none"
+              rows={2}
+            />
 
-          <div className="flex gap-3">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest"
-            >
-              {editingId ? 'Save Changes' : 'Register Device'}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setShowForm(false);
-                setEditingId(null);
-              }}
-              className="px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-gray-500"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
+            <div className="flex gap-3">
+              <button type="submit" className="btn-primary">
+                {editingId ? 'Save changes' : 'Register device'}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setShowForm(false); setEditingId(null); }}
+                className="btn-secondary"
+              >
+                Cancel
+              </button>
+            </div>
+          </motion.form>
+        )}
+      </AnimatePresence>
 
-      <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden">
+      {/* Device table */}
+      <div className="card overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-gray-400">Loading devices...</div>
+        ) : devices.length === 0 ? (
+          <div className="p-12 text-center text-gray-400">No devices registered yet.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
-                  {['Device', 'Type', 'Location', 'Status', 'Last Ping', 'Active', 'Actions'].map(
+                  {['Device', 'Type', 'Location', 'Status', 'Last ping', 'Active', 'Actions'].map(
                     (h) => (
                       <th
                         key={h}
-                        className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest"
+                        className="px-5 py-3.5 text-xs font-medium text-gray-500"
                       >
                         {h}
                       </th>
@@ -230,39 +242,39 @@ export function DevicesPage() {
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {devices.map((device) => (
-                  <tr key={device.deviceId} className="hover:bg-gray-50/50">
-                    <td className="px-6 py-4">
-                      <p className="text-sm font-bold text-gray-900">{device.name}</p>
+                  <tr key={device.deviceId} className="hover:bg-gray-50/60 transition-colors">
+                    <td className="px-5 py-4">
+                      <p className="text-sm font-semibold text-gray-800">{device.name}</p>
                       <p className="text-xs text-gray-400">{device.deviceId}</p>
                     </td>
-                    <td className="px-6 py-4 text-sm font-bold text-gray-700">{device.type}</td>
-                    <td className="px-6 py-4 text-sm text-gray-700">
+                    <td className="px-5 py-4 text-sm text-gray-600">{device.type}</td>
+                    <td className="px-5 py-4 text-sm text-gray-600">
                       {device.location?.name || device.locationId}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-5 py-4">
                       <StatusBadge status={device.status} />
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-5 py-4 text-sm text-gray-500">
                       {device.lastPing
                         ? new Date(device.lastPing).toLocaleString()
                         : 'Never'}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-5 py-4">
                       <button
                         onClick={() => toggleActive(device)}
-                        className={`text-xs font-black uppercase tracking-widest px-3 py-1 rounded-lg ${
-                          device.active
-                            ? 'bg-emerald-100 text-emerald-700'
-                            : 'bg-gray-100 text-gray-500'
-                        }`}
+                        className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${device.active
+                            ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
+                            : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                          }`}
                       >
                         {device.active ? 'Active' : 'Inactive'}
                       </button>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-5 py-4">
                       <button
                         onClick={() => startEdit(device)}
-                        className="p-2 rounded-lg hover:bg-blue-50 text-blue-600"
+                        className="p-2 rounded-lg hover:bg-indigo-50 text-indigo-500 transition-colors"
+                        aria-label="Edit device"
                       >
                         <Pencil size={16} />
                       </button>

@@ -11,10 +11,10 @@ export function ProtectedLayout() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F0F7FF]">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F0F4FF' }}>
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-sm font-bold text-gray-500 uppercase tracking-widest">Loading...</p>
+          <div className="w-12 h-12 border-4 border-indigo-600/20 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm text-gray-400">Loading...</p>
         </div>
       </div>
     );
@@ -23,11 +23,10 @@ export function ProtectedLayout() {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="flex h-screen bg-[#F0F7FF] overflow-hidden">
+    <div className="flex h-screen overflow-hidden" style={{ backgroundColor: '#F0F4FF' }}>
       <div
-        className={`fixed inset-y-0 left-0 z-50 transform lg:relative lg:translate-x-0 transition-transform duration-300 ${
-          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 transform lg:relative lg:translate-x-0 transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+          }`}
       >
         <Sidebar
           isCollapsed={isSidebarCollapsed}

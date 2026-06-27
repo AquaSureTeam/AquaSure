@@ -11,12 +11,13 @@ import {
 } from 'recharts';
 import { api } from '../api/client';
 import { Download } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const PARAM_OPTIONS = [
-  { key: 'ph', label: 'pH', color: '#2563eb' },
-  { key: 'turbidity', label: 'Turbidity', color: '#0891b2' },
-  { key: 'temperature', label: 'Temperature', color: '#ea580c' },
-  { key: 'tds', label: 'TDS', color: '#7c3aed' },
+  { key: 'ph', label: 'pH', color: '#6366F1' },
+  { key: 'turbidity', label: 'Turbidity', color: '#8B5CF6' },
+  { key: 'temperature', label: 'Temperature', color: '#F59E0B' },
+  { key: 'tds', label: 'TDS', color: '#10B981' },
 ];
 
 function defaultDateRange() {
@@ -30,17 +31,18 @@ function defaultDateRange() {
 }
 
 export function HistoricalDataPage() {
-  const [devices, setDevices] = useState([]);
+  const [devices, setDevices] = useState<any[]>([]);
   const [deviceId, setDeviceId] = useState('');
   const [dateRange, setDateRange] = useState(defaultDateRange());
-  const [readings, setReadings] = useState([]);
+  const [readings, setReadings] = useState<any[]>([]);
   const [activeParams, setActiveParams] = useState(['ph', 'temperature']);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    api.getDevices().then((data) => {
-      setDevices(data.devices || []);
-      if (data.devices?.length) setDeviceId(data.devices[0].deviceId);
+    api.getDevices().then((data: any) => {
+      const devs = data.devices || [];
+      setDevices(devs);
+      if (devs.length) setDeviceId(devs[0].deviceId);
     });
   }, []);
 
@@ -50,12 +52,12 @@ export function HistoricalDataPage() {
     const fetchHistory = async () => {
       setLoading(true);
       try {
-        const data = await api.getDeviceHistory(deviceId, {
+        const data: any = await api.getDeviceHistory(deviceId, {
           startDate: new Date(dateRange.start).toISOString(),
           endDate: new Date(`${dateRange.end}T23:59:59`).toISOString(),
         });
         setReadings(
-          (data.readings || []).map((r) => ({
+          (data.readings || []).map((r: any) => ({
             ...r,
             time: new Date(r.timestamp).toLocaleString([], {
               month: 'short',
@@ -75,7 +77,7 @@ export function HistoricalDataPage() {
     fetchHistory();
   }, [deviceId, dateRange]);
 
-  const toggleParam = (key) => {
+  const toggleParam = (key: string) => {
     setActiveParams((prev) =>
       prev.includes(key) ? prev.filter((p) => p !== key) : [...prev, key]
     );
@@ -98,31 +100,35 @@ export function HistoricalDataPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Page header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-gray-900">Historical Data</h1>
-          <p className="text-sm text-gray-500 mt-1">Trend analysis and data export</p>
+          <h1 className="text-2xl font-bold text-indigo-950">Historical Data</h1>
+          <p className="text-sm text-gray-500 mt-0.5">Trend analysis and data export</p>
         </div>
         <button
           onClick={exportCsv}
           disabled={!readings.length}
-          className="flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-blue-700 disabled:opacity-50"
+          className="flex items-center gap-2 btn-primary disabled:opacity-50 w-fit"
         >
-          <Download size={16} />
+          <Download size={15} />
           Export CSV
         </button>
       </div>
 
-      <div className="bg-white rounded-3xl p-6 border border-gray-100 flex flex-wrap gap-4 items-end">
+      {/* Controls */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="card p-5 flex flex-wrap gap-5 items-end"
+      >
         <div>
-          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-            Device
-          </label>
+          <label className="text-xs font-medium text-gray-500 block mb-1">Device</label>
           <select
             value={deviceId}
             onChange={(e) => setDeviceId(e.target.value)}
-            className="block mt-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold"
+            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm text-gray-700 outline-none focus:border-indigo-400"
           >
             {devices.map((d) => (
               <option key={d.deviceId} value={d.deviceId}>
@@ -132,61 +138,78 @@ export function HistoricalDataPage() {
           </select>
         </div>
         <div>
-          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-            Start Date
-          </label>
+          <label className="text-xs font-medium text-gray-500 block mb-1">Start date</label>
           <input
             type="date"
             value={dateRange.start}
             onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
-            className="block mt-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm"
+            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm outline-none focus:border-indigo-400"
           />
         </div>
         <div>
-          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-            End Date
-          </label>
+          <label className="text-xs font-medium text-gray-500 block mb-1">End date</label>
           <input
             type="date"
             value={dateRange.end}
             onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
-            className="block mt-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm"
+            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm outline-none focus:border-indigo-400"
           />
         </div>
-      </div>
+      </motion.div>
 
+      {/* Parameter toggles */}
       <div className="flex flex-wrap gap-2">
         {PARAM_OPTIONS.map(({ key, label, color }) => (
           <button
             key={key}
             onClick={() => toggleParam(key)}
-            className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border-2 transition-all ${
-              activeParams.includes(key)
-                ? 'border-transparent text-white'
-                : 'border-gray-200 text-gray-500 bg-white'
-            }`}
-            style={activeParams.includes(key) ? { backgroundColor: color } : {}}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all ${activeParams.includes(key)
+                ? 'text-white border-transparent'
+                : 'border-gray-200 text-gray-500 bg-white hover:border-indigo-300'
+              }`}
+            style={activeParams.includes(key) ? { backgroundColor: color, borderColor: color } : {}}
           >
             {label}
           </button>
         ))}
       </div>
 
-      <div className="bg-white rounded-3xl p-6 border border-gray-100 h-[420px]">
+      {/* Chart */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        className="card p-6 h-[420px]"
+      >
         {loading ? (
-          <div className="flex items-center justify-center h-full text-gray-400">Loading chart...</div>
+          <div className="flex items-center justify-center h-full text-gray-400">
+            Loading chart...
+          </div>
         ) : readings.length === 0 ? (
           <div className="flex items-center justify-center h-full text-gray-400">
-            No data for selected range
+            No data for the selected range
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={readings}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="time" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
-              <YAxis tick={{ fontSize: 10 }} />
-              <Tooltip />
-              <Legend />
+            <LineChart data={readings} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+              <XAxis
+                dataKey="time"
+                tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                interval="preserveStartEnd"
+              />
+              <YAxis tick={{ fontSize: 11, fill: '#9CA3AF' }} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #E5E7EB',
+                  borderRadius: '0.75rem',
+                  fontSize: '0.8rem',
+                }}
+              />
+              <Legend
+                wrapperStyle={{ fontSize: '0.8rem', paddingTop: '8px' }}
+              />
               {PARAM_OPTIONS.filter((p) => activeParams.includes(p.key)).map(({ key, label, color }) => (
                 <Line
                   key={key}
@@ -196,12 +219,13 @@ export function HistoricalDataPage() {
                   stroke={color}
                   strokeWidth={2}
                   dot={false}
+                  activeDot={{ r: 4 }}
                 />
               ))}
             </LineChart>
           </ResponsiveContainer>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }

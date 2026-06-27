@@ -1,7 +1,4 @@
-/**
- * Seed IsokoSense database with demo devices, users, and 7 days of historical readings.
- * Usage: node scripts/seed.js
- */
+
 require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');

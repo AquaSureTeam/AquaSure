@@ -77,6 +77,11 @@ export const api = {
     request(`/api/devices/${deviceId}`, { method: 'PATCH', body: JSON.stringify(payload) }),
 
   getDeviceStatus: (deviceId) => request(`/api/devices/${deviceId}/status`),
+
+  sendNotification: (payload) =>
+    request('/api/notifications', { method: 'POST', body: JSON.stringify(payload) }),
+
+  getZones: () => request('/api/zones'),
 };
 
 export { ApiError, API_BASE };

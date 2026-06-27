@@ -1,10 +1,4 @@
-/**
- * IsokoSense Data Simulator
- * Sends randomized sensor readings to POST /api/readings every 15 seconds.
- * Occasionally injects out-of-range values to trigger alerts.
- *
- * Usage: node simulator.js
- */
+
 require('dotenv').config();
 
 const API_URL = process.env.API_URL || `http://localhost:${process.env.PORT || 5000}`;
