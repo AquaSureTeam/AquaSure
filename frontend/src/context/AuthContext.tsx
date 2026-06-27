@@ -1,66 +1,58 @@
+import { createContext, useContext, useEffect, useState } from 'react';
+import { api } from '../api/client';
 
-import { createContext, useState, useContext, ReactNode } from "react";
+const AuthContext = createContext(null);
 
-export type UserRole = "admin" | "officer" | "operator" | "technician" | "researcher";
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-
-interface AuthContextType {
-  isAuthenticated: boolean;
-  userName: string;
-  userRole: UserRole | null;
-  login: (email: string, password: string, role: UserRole) => void;
-  register: (fullName: string, email: string, password: string, organization: string, role: UserRole) => void;
-  logout: () => void;
-}
-
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [userRole, setUserRole] = useState<UserRole | null>(null);
-
-
-  const login = (email: string, password: string, role: UserRole) => {
-    if (email && password && role) {
-      const name = email.split("@")[0];
-      setUserName(name.charAt(0).toUpperCase() + name.slice(1));
-      setUserRole(role);
-      setIsAuthenticated(true);
-      console.log(`Logged in as: ${role}`);
+  useEffect(() => {
+    const token = localStorage.getItem('isokosense_token');
+    if (!token) {
+      setLoading(false);
+      return;
     }
+
+    api
+      .me()
+      .then((data) => setUser(data.user))
+      .catch(() => {
+        localStorage.removeItem('isokosense_token');
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const login = async (email, password) => {
+    const data = await api.login(email, password);
+    localStorage.setItem('isokosense_token', data.token);
+    setUser(data.user);
+    return data;
   };
 
-  const register = (fullName: string, email: string, password: string, organization: string, role: UserRole) => {
-    if (fullName && email && password && role) {
-      setUserName(fullName);
-      setUserRole(role);
-      setIsAuthenticated(true);
-      console.log(`Registered as: ${role}`);
-    }
+  const register = async (payload) => {
+    const data = await api.register(payload);
+    localStorage.setItem('isokosense_token', data.token);
+    setUser(data.user);
+    return data;
   };
 
   const logout = () => {
-    setIsAuthenticated(false);
-    setUserName("");
-    setUserRole(null);
-    console.log("Logged out");
+    localStorage.removeItem('isokosense_token');
+    setUser(null);
   };
 
+  const isAdmin = user?.role === 'admin';
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userName, userRole, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 }

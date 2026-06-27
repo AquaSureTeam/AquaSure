@@ -1,21 +1,59 @@
 const express = require('express');
-const mongoose = require("mongoose");
-const cors = require("cors");
+const http = require('http');
+const cors = require('cors');
+const { Server } = require('socket.io');
 require('dotenv').config();
 
+const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
+const readingRoutes = require('./routes/readingRoutes');
+const alertRoutes = require('./routes/alertRoutes');
+const deviceRoutes = require('./routes/deviceRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const app = express();
-const connectDB = require('./config/db');
+const server = http.createServer(app);
 
+const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
+const io = new Server(server, {
+  cors: { origin: corsOrigin, methods: ['GET', 'POST', 'PATCH'] },
+});
 
-app.use(cors());
+app.set('io', io);
+
+app.use(
+  cors({
+    origin: corsOrigin,
+    credentials: true,
+  })
+);
 app.use(express.json());
 
-connectDB();
+app.get('/api/health', (_req, res) => {
+  res.json({ status: 'ok', service: 'IsokoSense API' });
+});
 
 app.use('/api/auth', authRoutes);
+app.use('/api/readings', readingRoutes);
+app.use('/api/alerts', alertRoutes);
+app.use('/api/devices', deviceRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server running on port ${process.env.PORT}`);
+app.use((_req, res) => {
+  res.status(404).json({ message: 'Route not found' });
 });
+
+app.use((err, _req, res, _next) => {
+  console.error(err);
+  res.status(500).json({ message: err.message || 'Internal server error' });
+});
+
+const PORT = process.env.PORT || 5000;
+
+connectDB().then(() => {
+  server.listen(PORT, () => {
+    console.log(`IsokoSense API running on port ${PORT}`);
+  });
+});
+
+module.exports = { app, server, io };
