@@ -157,7 +157,7 @@ export function LoginView({ onLogin, onSwitchToSignup }: LoginViewProps) {
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-3 cursor-pointer group">
-                  <div className={`w-6 h-6 rounded-lg border-2 transition-all flex items-center justify-center ${rememberMe ? 'bg-blue-600 border-blue-600' : 'bg-white border-gray-200 group-hover:border-blue-600'}`}>
+                  <div className={`w-6 h-6 rounded-lg border-2 transition-all flex items-center justify-center ${rememberMe ? 'bg-blue-600 border-blue-600' : 'bg-white/60 backdrop-blur-xl border border-white/50 border-gray-200 group-hover:border-blue-600'}`}>
                     {rememberMe && <CheckCircle size={14} className="text-white" />}
                   </div>
                   <input type="checkbox" className="hidden" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
@@ -185,7 +185,7 @@ export function LoginView({ onLogin, onSwitchToSignup }: LoginViewProps) {
                 <button
                   type="button"
                   onClick={onSwitchToSignup}
-                  className="w-full bg-white border-2 border-gray-100 hover:border-blue-600 hover:text-blue-600 text-gray-400 font-black py-6 rounded-2xl transition-all active:scale-[0.98] text-[10px] uppercase tracking-[0.3em]"
+                  className="w-full bg-white/60 backdrop-blur-xl border border-white/50 border-2 border-gray-100 hover:border-blue-600 hover:text-blue-600 text-gray-400 font-black py-6 rounded-2xl transition-all active:scale-[0.98] text-[10px] uppercase tracking-[0.3em]"
                 >
                   Create Account
                 </button>

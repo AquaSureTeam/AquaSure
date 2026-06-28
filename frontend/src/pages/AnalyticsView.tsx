@@ -57,7 +57,7 @@ export function AnalyticsView() {
           <p className="text-sm font-bold text-gray-400 mt-2 uppercase tracking-[0.2em]">Long-term performance trends & system health</p>
         </div>
         <div className="flex items-center gap-3">
-           <button className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-100 rounded-xl text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-blue-600 transition-all">
+           <button className="flex items-center gap-2 px-6 py-3 bg-white/60 backdrop-blur-xl border border-white/50 border border-gray-100 rounded-xl text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-blue-600 transition-all">
              <Filter size={16} />
              Filters
            </button>

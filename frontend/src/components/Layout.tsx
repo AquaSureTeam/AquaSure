@@ -23,7 +23,11 @@ export function ProtectedLayout() {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ backgroundColor: '#F0F4FF' }}>
+    <div className="flex h-screen overflow-hidden bg-[#F0F4F8] relative font-sans">
+      {/* Decorative background glassmorphism elements */}
+      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-400/10 rounded-full blur-[120px] animate-pulse pointer-events-none z-0" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-600/5 rounded-full blur-[150px] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-white via-transparent to-blue-50/30 pointer-events-none z-0" />
       <div
         className={`fixed inset-y-0 left-0 z-50 transform lg:relative lg:translate-x-0 transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}

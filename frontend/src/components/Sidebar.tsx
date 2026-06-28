@@ -29,7 +29,7 @@ const ROLE_LINKS = {
 };
 
 const ROLE_COLORS: Record<string, string> = {
-  admin: 'bg-indigo-100 text-indigo-700',
+  admin: 'bg-blue-100 text-blue-700',
   viewer: 'bg-gray-100 text-gray-600',
 };
 
@@ -48,17 +48,17 @@ export function Sidebar({ isCollapsed, onToggleCollapse, onNavigate }: SidebarPr
   return (
     <div
       style={{ width: isCollapsed ? 72 : 256, transition: 'width 0.2s ease' }}
-      className="h-screen bg-white border-r border-gray-100 flex flex-col shadow-sm flex-shrink-0"
+      className="h-screen bg-white/60 backdrop-blur-3xl border-r border-white/50 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] flex-shrink-0 relative z-20"
     >
       {/* Logo */}
-      <div className="p-4 flex items-center gap-3 border-b border-gray-50">
-        <div className="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
+      <div className="p-4 flex items-center gap-3 border-b border-white/50">
+        <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-200">
           <Droplets size={18} className="text-white" />
         </div>
         {!isCollapsed && (
           <div className="overflow-hidden">
-            <p className="font-bold text-indigo-950 text-sm leading-tight">IsokoSense</p>
-            <p className="text-xs text-indigo-400">Water Monitoring</p>
+            <p className="font-bold text-gray-900 text-sm leading-tight">IsokoSense</p>
+            <p className="text-xs font-bold text-blue-500 uppercase tracking-widest">Portal</p>
           </div>
         )}
       </div>
@@ -72,10 +72,10 @@ export function Sidebar({ isCollapsed, onToggleCollapse, onNavigate }: SidebarPr
             end={to === '/'}
             onClick={onNavigate}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${isCollapsed ? 'justify-center' : ''
+              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all ${isCollapsed ? 'justify-center' : ''
               } ${isActive
-                ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-200'
-                : 'text-gray-500 hover:bg-indigo-50 hover:text-indigo-600'
+                ? 'bg-blue-600 text-white shadow-md shadow-blue-200'
+                : 'text-gray-500 hover:bg-white/80 hover:text-blue-600'
               }`
             }
           >
@@ -89,7 +89,7 @@ export function Sidebar({ isCollapsed, onToggleCollapse, onNavigate }: SidebarPr
       <div className="px-3 pb-2">
         <button
           onClick={onToggleCollapse}
-          className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-gray-600 text-xs transition-colors"
+          className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-gray-400 hover:bg-white/80 hover:text-gray-600 text-xs transition-colors font-bold"
         >
           {isCollapsed ? (
             <ChevronRight size={16} />
@@ -102,15 +102,15 @@ export function Sidebar({ isCollapsed, onToggleCollapse, onNavigate }: SidebarPr
       </div>
 
       {/* User footer */}
-      <div className="p-3 border-t border-gray-50">
+      <div className="p-3 border-t border-white/50">
         {!isCollapsed && user ? (
-          <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 cursor-default mb-1">
-            <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-sm flex-shrink-0">
+          <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/50 cursor-default mb-1 transition-colors">
+            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm flex-shrink-0 shadow-sm">
               {(user as any).fullName?.[0]?.toUpperCase() || 'U'}
             </div>
             <div className="overflow-hidden flex-1 min-w-0">
-              <p className="text-sm font-semibold text-gray-800 truncate">{(user as any).fullName}</p>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${roleColor}`}>
+              <p className="text-sm font-bold text-gray-800 truncate">{(user as any).fullName}</p>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${roleColor}`}>
                 {role}
               </span>
             </div>
@@ -118,11 +118,11 @@ export function Sidebar({ isCollapsed, onToggleCollapse, onNavigate }: SidebarPr
         ) : null}
         <button
           onClick={logout}
-          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-400 hover:bg-red-50 hover:text-red-500 text-sm transition-all ${isCollapsed ? 'justify-center' : ''
+          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-400 hover:bg-red-50 hover:text-red-500 text-sm transition-all font-bold ${isCollapsed ? 'justify-center' : ''
             }`}
         >
           <LogOut size={17} />
-          {!isCollapsed && <span className="font-medium">Sign out</span>}
+          {!isCollapsed && <span>Sign out</span>}
         </button>
       </div>
     </div>

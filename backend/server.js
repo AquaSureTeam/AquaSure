@@ -16,15 +16,27 @@ const app = express();
 const server = http.createServer(app);
 
 const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
+
+// When tinkercad-bridge.html is opened from the filesystem the browser
+// sends origin: null — we must allow that too (only in development).
+const allowedOrigins = [corsOrigin, 'null', null];
+
 const io = new Server(server, {
-  cors: { origin: corsOrigin, methods: ['GET', 'POST', 'PATCH'] },
+  cors: { origin: allowedOrigins, methods: ['GET', 'POST', 'PATCH'] },
 });
 
 app.set('io', io);
 
 app.use(
   cors({
-    origin: corsOrigin,
+    origin: (origin, callback) => {
+      // allow requests with no origin (null / file://) and listed origins
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origin ${origin} not allowed`));
+      }
+    },
     credentials: true,
   })
 );

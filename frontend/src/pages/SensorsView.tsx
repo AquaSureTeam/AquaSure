@@ -129,7 +129,7 @@ export function SensorsView() {
               </div>
 
               <div className="mt-8 pt-6 border-t border-gray-100 flex gap-3">
-                <button className="flex-1 py-4 bg-white border border-gray-100 text-[10px] font-black text-gray-400 uppercase tracking-widest rounded-[1.25rem] hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+                <button className="flex-1 py-4 bg-white/60 backdrop-blur-xl border border-white/50 border border-gray-100 text-[10px] font-black text-gray-400 uppercase tracking-widest rounded-[1.25rem] hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
                   <Settings size={14} />
                   Calibrate
                 </button>

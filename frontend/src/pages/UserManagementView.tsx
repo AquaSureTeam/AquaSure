@@ -220,7 +220,7 @@ export function UserManagementView() {
                     value={formData.temporaryPassword}
                     onChange={(e) => setFormData({ ...formData, temporaryPassword: e.target.value })}
                     placeholder="Temporary Authorization Key"
-                    className="w-full pl-16 pr-8 py-5 bg-white border border-blue-100 rounded-[2rem] text-gray-900 font-mono font-bold focus:outline-none focus:ring-8 focus:ring-blue-600/5 transition-all"
+                    className="w-full pl-16 pr-8 py-5 bg-white/60 backdrop-blur-xl border border-white/50 border border-blue-100 rounded-[2rem] text-gray-900 font-mono font-bold focus:outline-none focus:ring-8 focus:ring-blue-600/5 transition-all"
                   />
                 </div>
                 <div className="flex items-center gap-4 px-4 py-2">

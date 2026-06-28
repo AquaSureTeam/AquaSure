@@ -264,8 +264,8 @@ export function ResearcherDashboard() {
         <div className="p-8 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between">
           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Page 1 of 124</p>
           <div className="flex gap-2">
-            <button className="px-6 py-2.5 bg-white border border-gray-100 rounded-xl text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-blue-600 transition-all">Prev</button>
-            <button className="px-6 py-2.5 bg-white border border-gray-100 rounded-xl text-[10px] font-black text-gray-900 uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all">Next</button>
+            <button className="px-6 py-2.5 bg-white/60 backdrop-blur-xl border border-white/50 border border-gray-100 rounded-xl text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-blue-600 transition-all">Prev</button>
+            <button className="px-6 py-2.5 bg-white/60 backdrop-blur-xl border border-white/50 border border-gray-100 rounded-xl text-[10px] font-black text-gray-900 uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all">Next</button>
           </div>
         </div>
       </div>

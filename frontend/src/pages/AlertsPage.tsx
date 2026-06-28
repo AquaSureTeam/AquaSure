@@ -276,7 +276,7 @@ export function AlertsPage() {
                               <ShieldCheck size={13} />
                               Recommended remediation
                             </p>
-                            <p className="text-sm text-gray-700 leading-relaxed bg-white p-4 rounded-xl border border-gray-100">
+                            <p className="text-sm text-gray-700 leading-relaxed bg-white/60 backdrop-blur-xl border border-white/50 p-4 rounded-xl border border-gray-100">
                               {alert.remediation || 'No remediation guidance available.'}
                             </p>
                           </div>

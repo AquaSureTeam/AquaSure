@@ -165,7 +165,7 @@ export function HistoricalDataPage() {
             onClick={() => toggleParam(key)}
             className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all ${activeParams.includes(key)
                 ? 'text-white border-transparent'
-                : 'border-gray-200 text-gray-500 bg-white hover:border-indigo-300'
+                : 'border-gray-200 text-gray-500 bg-white/60 backdrop-blur-xl border border-white/50 hover:border-indigo-300'
               }`}
             style={activeParams.includes(key) ? { backgroundColor: color, borderColor: color } : {}}
           >
