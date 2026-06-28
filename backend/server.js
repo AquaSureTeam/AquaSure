@@ -10,6 +10,7 @@ const readingRoutes = require('./routes/readingRoutes');
 const alertRoutes = require('./routes/alertRoutes');
 const deviceRoutes = require('./routes/deviceRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -38,6 +39,7 @@ app.use('/api/readings', readingRoutes);
 app.use('/api/alerts', alertRoutes);
 app.use('/api/devices', deviceRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 app.use((_req, res) => {
   res.status(404).json({ message: 'Route not found' });

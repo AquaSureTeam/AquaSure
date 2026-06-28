@@ -19,10 +19,10 @@ export function UserManagementView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API fetch for users
+   
     const fetchUsers = async () => {
       setLoading(true);
-      // In production: const response = await fetch('/api/users');
+  
       setTimeout(() => {
         setUsers([
           { id: 1, name: "John Doe", email: "john@industry.rw", role: "operator", station: "Station B", status: "active" },
@@ -52,8 +52,6 @@ export function UserManagementView() {
     };
 
     setUsers([newUser, ...users]);
-
-    // Reset form
     setFormData({
       fullName: "",
       email: "",

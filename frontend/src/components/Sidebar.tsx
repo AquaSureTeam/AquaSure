@@ -96,7 +96,6 @@ export function Sidebar({ isCollapsed, onToggleCollapse, onNavigate }: SidebarPr
           ) : (
             <>
               <ChevronLeft size={16} />
-              <span>Collapse</span>
             </>
           )}
         </button>

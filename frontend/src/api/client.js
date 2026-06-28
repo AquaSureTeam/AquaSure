@@ -81,6 +81,8 @@ export const api = {
   sendNotification: (payload) =>
     request('/api/notifications', { method: 'POST', body: JSON.stringify(payload) }),
 
+  getNotifications: () => request('/api/notifications'),
+
   getZones: () => request('/api/zones'),
 };
 
