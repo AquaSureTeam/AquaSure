@@ -36,13 +36,33 @@ exports.ingestReading = async (req, res) => {
       overallStatus,
     });
 
-    const device = await Device.findOne({ deviceId });
-    const locationName = device?.location?.name || locationId;
-
-    if (device) {
+    let device = await Device.findOne({ deviceId });
+    
+    // Auto-provisioning: If device is new, register it automatically
+    if (!device) {
+      device = await Device.create({
+        deviceId,
+        locationId,
+        name: `IsokoUnit-${deviceId}`,
+        type: 'IsokoUnit',
+        location: {
+          name: locationId,
+          district: 'Unknown',
+        },
+        active: true,
+        lastPing: new Date(timestamp),
+        description: 'Auto-provisioned by incoming telemetry',
+      });
+    } else {
       device.lastPing = new Date(timestamp);
+      // Automatically link to new location if it moved
+      if (device.locationId !== locationId) {
+        device.locationId = locationId;
+      }
       await device.save();
     }
+
+    const locationName = device.location?.name || locationId;
 
     const createdAlerts = [];
     for (const check of alertChecks) {
